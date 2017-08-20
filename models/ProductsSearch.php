@@ -19,6 +19,7 @@ class ProductsSearch extends Products
     {
         return [
             [['id', 'name_id', 'supplier_id', 'manufacturer_id', 'branch_id', 'size_id', 'price'], 'integer'],
+            [['art'], 'string'],
         ];
     }
 
@@ -65,6 +66,7 @@ class ProductsSearch extends Products
             'branch_id' => $this->branch_id,
             'size_id' => $this->size_id,
             'price' => $this->price,
+            'art' => $this->art,
         ]);
 
         return $dataProvider;

@@ -14,6 +14,7 @@ use Yii;
  * @property integer $branch_id
  * @property integer $size_id
  * @property integer $price
+ * @property string $art
  *
  * @property ProdNames $name
  * @property Suppliers $supplier
@@ -38,6 +39,7 @@ class Products extends \yii\db\ActiveRecord
     {
         return [
             [['name_id', 'supplier_id', 'manufacturer_id', 'branch_id', 'size_id', 'price'], 'integer'],
+            [['art'], 'string'],
             [['name_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProdNames::className(), 'targetAttribute' => ['name_id' => 'id']],
             [['supplier_id'], 'exist', 'skipOnError' => true, 'targetClass' => Suppliers::className(), 'targetAttribute' => ['supplier_id' => 'id']],
             [['manufacturer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Manufacturers::className(), 'targetAttribute' => ['manufacturer_id' => 'id']],
@@ -59,6 +61,7 @@ class Products extends \yii\db\ActiveRecord
             'branch_id' => 'Branch ID',
             'size_id' => 'Size ID',
             'price' => 'Price',
+            'art' => 'Art',
         ];
     }
 
