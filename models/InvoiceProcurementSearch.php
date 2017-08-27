@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Filials;
+use app\models\InvoiceProcurement;
 
 /**
- * FilialsSearch represents the model behind the search form about `app\models\Filials`.
+ * InvoiceProcurementSearch represents the model behind the search form about `app\models\InvoiceProcurement`.
  */
-class FilialsSearch extends Filials
+class InvoiceProcurementSearch extends InvoiceProcurement
 {
     /**
      * @inheritdoc
@@ -18,8 +18,8 @@ class FilialsSearch extends Filials
     public function rules()
     {
         return [
-            [['id', 'status'], 'integer'],
-            [['name'], 'safe'],
+            [['id', 'branch_id', 'created_at', 'user_id', 'is_closed'], 'integer'],
+            [['description'], 'safe'],
         ];
     }
 
@@ -41,8 +41,10 @@ class FilialsSearch extends Filials
      */
     public function search($params)
     {
-        $query = Filials::find();
-
+        $query = InvoiceProcurement::find();
+        if (!isset($params['sort'])) {
+            $query->orderBy(['id' => SORT_DESC]);
+        }
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
@@ -60,10 +62,14 @@ class FilialsSearch extends Filials
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'status' => $this->status,
+            'branch_id' => $this->branch_id,
+            'created_at' => $this->created_at,
+            'user_id' => $this->user_id,
+            'is_closed' => $this->is_closed,
         ]);
 
-        $query->andFilterWhere(['like', 'name', $this->name]);
+        $query->andFilterWhere(['like', 'description', $this->description])
+            ->with(['user', 'branch']);
 
         return $dataProvider;
     }

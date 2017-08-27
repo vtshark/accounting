@@ -1,23 +1,20 @@
 <?
-use yii\helpers\Html;
-use yii\bootstrap\ActiveForm;
-
+use yii\helpers\Url;
+use yii\web\View;
 ?>
-<? $form = ActiveForm::begin([
-    'id' => 'add-prod-form',
-    'layout' => 'horizontal',
-    'fieldConfig' => [
-        'template' => "{label}\n<div class=\"col-lg-3\">{input}</div>\n<div class=\"col-lg-8\">{error}</div>",
-        'labelOptions' => ['class' => 'col-lg-1 control-label'],
-    ],
-]); ?>
 
-<?= $form->field($product, 'supplier_id')->textInput() ?>
-
-<div class="form-group">
-    <div class="col-lg-offset-1 col-lg-11">
-        <?= Html::submitButton('Add', ['class' => 'btn btn-primary']) ?>
+<?php if (Yii::$app->session->hasFlash('msgError')) { ?>
+    <div class="alert alert-danger"><a href="#" class="close" data-dismiss="alert">&times;</a>
+        <?= Yii::$app->session->getFlash('msgError'); ?>
     </div>
-</div>
+<?php } ?>
 
-<?php ActiveForm::end(); ?>
+<?= $this->render('_add_form', ['product' => $product]); ?>
+<?= $this->renderAjax('_products_list', [
+    'searchModel' => $searchModel,
+    'dataProvider' => $dataProvider]
+);
+?>
+
+<?
+$this->registerJsFile(Url::to('@web/js/addProducts.js'), ['position' => View::POS_END, 'depends' => 'yii\web\JqueryAsset']);
