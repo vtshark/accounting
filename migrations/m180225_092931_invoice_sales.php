@@ -24,7 +24,7 @@ class m180225_092931_invoice_sales extends Migration
                 'description'=> $this->string(255)->null()->defaultValue(null),
                 'created_at'=> $this->integer(11)->null()->defaultValue(null),
                 'user_id'=> $this->integer(11)->null()->defaultValue(null),
-                'is_closed'=> $this->tinyInteger(1)->notNull()->defaultValue(0),
+                'is_closed' => $this->integer(1)->notNull()->defaultValue(0),
             ],$tableOptions
         );
         $this->createIndex('store_id','{{%invoice_sales}}',['store_id'],false);

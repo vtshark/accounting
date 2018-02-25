@@ -14,7 +14,7 @@ class ProductController extends Controller
     public function actionCreate() {
         if (\Yii::$app->request->isAjax && \Yii::$app->request->isPost) {
             $outData = [];
-
+            $post = \Yii::$app->request->post();
             $newRecord = (empty($post['Products']['id'])) ? true : false;
 
             // processing of the list of products
