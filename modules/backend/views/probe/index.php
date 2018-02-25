@@ -6,15 +6,15 @@ use yii\grid\GridView;
 /* @var $this yii\web\View */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = 'Sizes';
+$this->title = 'Probes';
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="sizes-index">
+<div class="probe-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
 
     <p>
-        <?= Html::a('Create Sizes', ['create'], ['class' => 'btn btn-success']) ?>
+        <?= Html::a('Create Probe', ['create'], ['class' => 'btn btn-success']) ?>
     </p>
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
@@ -22,7 +22,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            'size',
 
             ['class' => 'yii\grid\ActionColumn'],
         ],

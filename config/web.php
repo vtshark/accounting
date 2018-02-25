@@ -46,7 +46,9 @@ $config = [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
-                'add-products/invoice/<procurement_invoice_id:\d+>' => 'add-products/invoice',
+                'invoice-procurement/<procurement_invoice_id:\d+>' => 'invoice-procurement/index',
+                'product/update-form/<product_id:\d+>' => 'product/update-form',
+                'product/delete/<product_id:\d+>' => 'product/delete',
             ],
         ],
 

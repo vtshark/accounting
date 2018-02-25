@@ -5,19 +5,18 @@ namespace app\models;
 use Yii;
 
 /**
- * This is the model class for table "sizes".
+ * This is the model class for table "probe".
  *
  * @property integer $id
- * @property double $size
  */
-class Sizes extends \yii\db\ActiveRecord
+class Probe extends \yii\db\ActiveRecord
 {
     /**
      * @inheritdoc
      */
     public static function tableName()
     {
-        return 'sizes';
+        return 'probe';
     }
 
     /**
@@ -26,7 +25,7 @@ class Sizes extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['size'], 'number'],
+            [['id'], 'integer'],
         ];
     }
 
@@ -36,8 +35,12 @@ class Sizes extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id' => 'ID',
-            'size' => 'Size',
+            'id' => 'Проба',
         ];
     }
+
+    public static function getAll() {
+        return self::find()->asArray()->all();
+    }
+
 }

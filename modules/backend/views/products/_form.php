@@ -20,7 +20,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'branch_id')->textInput() ?>
 
-    <?= $form->field($model, 'size_id')->textInput() ?>
+    <?= $form->field($model, 'size')->textInput() ?>
 
     <?= $form->field($model, 'art')->textInput() ?>
 

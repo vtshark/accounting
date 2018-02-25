@@ -27,7 +27,8 @@ class Suppliers extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name_full', 'name_short'], 'string', 'max' => 255],
+            [['name_full'], 'string', 'max' => 255],
+            [['name_short'], 'string', 'max' => 30],
         ];
     }
 

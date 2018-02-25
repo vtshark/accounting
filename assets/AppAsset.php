@@ -22,6 +22,9 @@ class AppAsset extends AssetBundle
         'css/style.css',
     ];
     public $js = [
+        'js/jquery.floatThead.min.js',
+        'js/bootbox.min.js',
+        'js/main.js',
     ];
     public $depends = [
         'yii\web\YiiAsset',

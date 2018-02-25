@@ -18,5 +18,7 @@ use yii\helpers\Html;
 <div><?= Html::a('Изделия', ['/backend/products'], ['class' => 'btn btn-success']) ?></div>
 <br>
 <div><?= Html::a('Накдажные закупок', ['/backend/invoice-procurement'], ['class' => 'btn btn-success']) ?></div>
+<br>
+<div><?= Html::a('Пробы', ['/backend/probe'], ['class' => 'btn btn-success']) ?></div>
 
 

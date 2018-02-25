@@ -3,7 +3,7 @@
 use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
-use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 /* @var $this yii\web\View */
 /* @var $searchModel app\models\InvoiceProcurementSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
@@ -20,15 +20,33 @@ use yii\helpers\ArrayHelper;
         <?/*= Html::a('Create Invoice Procurement', ['create'], ['class' => 'btn btn-success']) */?>
     </p>-->
     <?php Pjax::begin(['id' => 'invoice-procur-list', 'enablePushState' => false]); ?>
+
+
+
     <?= GridView::widget([
         'dataProvider' => $dataProvider,
-        //'filterModel' => $searchModel,
-        'rowOptions' => ['class' => 'table-row', 'style' => 'background-color:#778899;'],
+        'filterModel' => $searchModel,
+        'tableOptions' => [
+            'class' => 'table table-bordered'
+        ],
+        'rowOptions' => ['class' => 'table-row'],
 
         'columns' => [
             //['class' => 'yii\grid\SerialColumn'],
 
-            'id',
+            [
+                'attribute' => 'id',
+                'format' => 'raw',
+                'value' => function($data) {
+                    return Html::a($data->id, Url::to('/invoice-procurement/' . $data->id));
+                },
+            ],
+            [
+                'attribute' => 'supplier_id',
+                'value' => function($data) {
+                    return $data->supplier->name_short;
+                },
+            ],
             [
                 'attribute' => 'description',
             ],
@@ -50,9 +68,12 @@ use yii\helpers\ArrayHelper;
                 'value' => function($data) {
                         return ($data->is_closed) ? '<span class="glyphicon glyphicon-ok"></span>' : '';
                 },
+                'filter' => [ 0 => 'Открытые', 1 => 'Закрытые' ],
+                'headerOptions' => ['style' => 'width:100px;'],
             ],
 
             //['class' => 'yii\grid\ActionColumn'],
         ],
     ]); ?>
-    <?php Pjax::end(); ?></div>
+    <?php Pjax::end(); ?>
+</div>

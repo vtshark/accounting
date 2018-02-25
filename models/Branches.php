@@ -43,4 +43,9 @@ class Branches extends \yii\db\ActiveRecord
             'status' => 'Status',
         ];
     }
+
+    public static function getAll() {
+        return self::find()->asArray()->all();
+    }
+
 }

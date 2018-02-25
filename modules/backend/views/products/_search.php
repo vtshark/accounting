@@ -25,7 +25,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'branch_id') ?>
 
-    <?php // echo $form->field($model, 'size_id') ?>
+    <?php // echo $form->field($model, 'size') ?>
 
     <div class="form-group">
         <?= Html::submitButton('Search', ['class' => 'btn btn-primary']) ?>

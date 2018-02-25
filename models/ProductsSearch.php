@@ -18,8 +18,10 @@ class ProductsSearch extends Products
     public function rules()
     {
         return [
-            [['id', 'name_id', 'supplier_id', 'manufacturer_id', 'branch_id', 'size_id', 'price_sell'], 'integer'],
-            [['weight', 'price_procur'], 'double'],
+            [['id', 'name_id', 'supplier_id', 'manufacturer_id', 'branch_id', 'price_sell', 'probe', 'category_id'], 'integer'],
+            [['weight',
+                //'size',
+                'price_procur'], 'double'],
             [['art'], 'string'],
         ];
     }
@@ -65,7 +67,7 @@ class ProductsSearch extends Products
             'supplier_id' => $this->supplier_id,
             'manufacturer_id' => $this->manufacturer_id,
             'branch_id' => $this->branch_id,
-            'size_id' => $this->size_id,
+            //'size' => $this->size,
             'art' => $this->art,
         ]);
         $query->with(['name', 'manufacturer', 'size', 'branch']);
@@ -103,17 +105,23 @@ class ProductsSearch extends Products
             'supplier_id' => $this->supplier_id,
             'manufacturer_id' => $this->manufacturer_id,
             'branch_id' => $this->branch_id,
-            'size_id' => $this->size_id,
+            //'size' => $this->size,
             'art' => $this->art,
+            'weight' => $this->weight,
+            'probe' => $this->probe,
+            'category_id' => $this->category_id
         ]);
 
-        $query->with(['name', 'manufacturer', 'size', 'branch']);
+        $query->with(['prodName', 'manufacturer', 'size', 'branch']);
 
         return $dataProvider;
     }
 
-
-
+    /**
+     * @param $provider
+     * @param $fieldName
+     * @return int
+     */
     public static function getTotal($provider, $fieldName) {
         $total = 0;
         foreach ($provider as $item) {

@@ -18,7 +18,7 @@ class InvoiceProcurementSearch extends InvoiceProcurement
     public function rules()
     {
         return [
-            [['id', 'branch_id', 'created_at', 'user_id', 'is_closed'], 'integer'],
+            [['id', 'supplier_id', 'created_at', 'user_id', 'is_closed'], 'integer'],
             [['description'], 'safe'],
         ];
     }
@@ -62,14 +62,14 @@ class InvoiceProcurementSearch extends InvoiceProcurement
         // grid filtering conditions
         $query->andFilterWhere([
             'id' => $this->id,
-            'branch_id' => $this->branch_id,
+            'supplier_id' => $this->supplier_id,
             'created_at' => $this->created_at,
             'user_id' => $this->user_id,
             'is_closed' => $this->is_closed,
         ]);
 
         $query->andFilterWhere(['like', 'description', $this->description])
-            ->with(['user', 'branch']);
+            ->with(['user', 'supplier']);
 
         return $dataProvider;
     }

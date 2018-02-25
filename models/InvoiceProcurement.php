@@ -8,13 +8,13 @@ use Yii;
  * This is the model class for table "invoice_procurement".
  *
  * @property integer $id
- * @property integer $branch_id
+ * @property integer $supplier_id
  * @property string $description
  * @property integer $created_at
  * @property integer $user_id
  * @property integer $is_closed
  *
- * @property Branches $branch
+ * @property Suppliers $supplier
  * @property Users $user
  */
 class InvoiceProcurement extends \yii\db\ActiveRecord
@@ -42,9 +42,10 @@ class InvoiceProcurement extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['branch_id', 'created_at', 'user_id', 'is_closed'], 'integer'],
+            [['supplier_id', 'user_id'], 'required'],
+            [['supplier_id', 'created_at', 'user_id', 'is_closed'], 'integer'],
             [['description'], 'string', 'max' => 255],
-            [['branch_id'], 'exist', 'skipOnError' => true, 'targetClass' => Branches::className(), 'targetAttribute' => ['branch_id' => 'id']],
+            [['supplier_id'], 'exist', 'skipOnError' => true, 'targetClass' => Suppliers::className(), 'targetAttribute' => ['supplier_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -56,7 +57,7 @@ class InvoiceProcurement extends \yii\db\ActiveRecord
     {
         return [
             'id' => '№',
-            'branch_id' => 'Филиал',
+            'supplier_id' => 'Поставщик',
             'description' => 'Описание',
             'created_at' => 'Дата создания',
             'user_id' => 'Пользователь',
@@ -67,9 +68,9 @@ class InvoiceProcurement extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getBranch()
+    public function getSupplier()
     {
-        return $this->hasOne(Branches::className(), ['id' => 'branch_id']);
+        return $this->hasOne(Suppliers::className(), ['id' => 'supplier_id']);
     }
 
     /**

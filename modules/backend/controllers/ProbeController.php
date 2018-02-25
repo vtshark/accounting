@@ -3,16 +3,16 @@
 namespace app\modules\backend\controllers;
 
 use Yii;
-use app\models\Sizes;
+use app\models\Probe;
 use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * SizesController implements the CRUD actions for Sizes model.
+ * ProbeController implements the CRUD actions for Probe model.
  */
-class SizesController extends Controller
+class ProbeController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,13 +30,13 @@ class SizesController extends Controller
     }
 
     /**
-     * Lists all Sizes models.
+     * Lists all Probe models.
      * @return mixed
      */
     public function actionIndex()
     {
         $dataProvider = new ActiveDataProvider([
-            'query' => Sizes::find(),
+            'query' => Probe::find(),
         ]);
 
         return $this->render('index', [
@@ -45,7 +45,7 @@ class SizesController extends Controller
     }
 
     /**
-     * Displays a single Sizes model.
+     * Displays a single Probe model.
      * @param integer $id
      * @return mixed
      */
@@ -57,13 +57,13 @@ class SizesController extends Controller
     }
 
     /**
-     * Creates a new Sizes model.
+     * Creates a new Probe model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Sizes();
+        $model = new Probe();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
@@ -75,7 +75,7 @@ class SizesController extends Controller
     }
 
     /**
-     * Updates an existing Sizes model.
+     * Updates an existing Probe model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -94,7 +94,7 @@ class SizesController extends Controller
     }
 
     /**
-     * Deletes an existing Sizes model.
+     * Deletes an existing Probe model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -107,15 +107,15 @@ class SizesController extends Controller
     }
 
     /**
-     * Finds the Sizes model based on its primary key value.
+     * Finds the Probe model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return Sizes the loaded model
+     * @return Probe the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Sizes::findOne($id)) !== null) {
+        if (($model = Probe::findOne($id)) !== null) {
             return $model;
         } else {
             throw new NotFoundHttpException('The requested page does not exist.');

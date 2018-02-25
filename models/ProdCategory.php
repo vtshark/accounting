@@ -40,4 +40,8 @@ class ProdCategory extends \yii\db\ActiveRecord
             'name' => 'Name',
         ];
     }
+
+    public static function getAll() {
+        return self::find()->asArray()->all();
+    }
 }
