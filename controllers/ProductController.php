@@ -13,20 +13,45 @@ class ProductController extends Controller
 {
     public function actionCreate() {
         if (\Yii::$app->request->isAjax && \Yii::$app->request->isPost) {
-            $post = \Yii::$app->request->post();
-            if (empty($post['Products']['id'])) {
-                $product = new Products();
-                $newRecord = true;
-            } else {
-                $product = Products::findOne($post['Products']['id']);
-                $newRecord = false;
-            }
-            $product->load($post);
+            $outData = [];
 
-            if (!$product->save()) {
-                return json_encode(['error' => true, 'data' => $product->getErrors()]);
+            $newRecord = (empty($post['Products']['id'])) ? true : false;
+
+            // processing of the list of products
+            if ($newRecord && isset($post['Products']['count-prod']) && (int)$post['Products']['count-prod'] > 1 ) {
+
+                $count = (int)$post['Products']['count-prod'];
+
+                /**@todo доработать */
+                if ($count >= 300) {
+                    return json_encode(['error' => true, 'data' => null]);
+                }
+
+                unset($post['Products']['count-prod']);
+                for($i = 1; $i <= $count; $i++) {
+                    $product = new Products();
+                    $product->load($post);
+                    if (!$product->save()) {
+                        return json_encode(['error' => true, 'data' => $product->getErrors()]);
+                    } else {
+                        //return json_encode(['error' => false, 'data' => self::prepareDataToTable($product), 'newRecord' => $newRecord]);
+                        $outData[] = self::prepareDataToTable($product);
+                    }
+                }
+                return json_encode(['error' => false, 'data' => $outData, 'newRecord' => $newRecord]);
+
             } else {
-                return json_encode(['error' => false, 'data' => self::prepareDataToTable($product), 'newRecord' => $newRecord]);
+                // processing of the single product
+
+                $product = ($newRecord) ? new Products() : Products::findOne($post['Products']['id']);
+
+                $product->load($post);
+                if (!$product->save()) {
+                    return json_encode(['error' => true, 'data' => $product->getErrors()]);
+                } else {
+                    $outData[] = self::prepareDataToTable($product);
+                    return json_encode(['error' => false, 'data' => $outData, 'newRecord' => $newRecord]);
+                }
             }
         }
         return json_encode(['error' => true, 'data' => null]);
@@ -41,12 +66,13 @@ class ProductController extends Controller
             'id' => $product->id,
             'manufacturer' => $product->manufacturer->name,
             'name' => $product->prodName->name,
-            //'size' => $product->size,
+            'size' => $product->size,
             'art' => $product->art,
             'weight' => $product->weight,
             'price_procur' => $product->price_procur,
             'price_sell' => $product->price_sell,
-            'branch' => $product->branch->name,
+            'store' => $product->store->name,
+            'category' => $product->category->name,
             'probe' => $product->probe,
         ];
     }

@@ -75,6 +75,22 @@ Modal::end();
         </ul>
 
     </li>
+
+    <li role="presentation">
+
+        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            Филиал <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu invoice-menu" id="choose-store">
+            <li role="presentation"><a href="#">Временный</a></li>
+            <li role="separator" class="divider"></li>
+            <li role="presentation"><a href="#">Склад-Киев</a></li>
+            <li role="separator" class="divider"></li>
+            <li role="presentation"><a href="#">Склад-Донецк</a></li>
+        </ul>
+
+    </li>
+
 </ul>
 
 <div class="tab-content">

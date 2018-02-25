@@ -18,10 +18,8 @@ class ProductsSearch extends Products
     public function rules()
     {
         return [
-            [['id', 'name_id', 'supplier_id', 'manufacturer_id', 'branch_id', 'price_sell', 'probe', 'category_id'], 'integer'],
-            [['weight',
-                //'size',
-                'price_procur'], 'double'],
+            [['id', 'name_id', 'supplier_id', 'manufacturer_id', 'store_id', 'price_sell', 'probe', 'category_id'], 'integer'],
+            [['weight', 'size', 'price_procur'], 'double'],
             [['art'], 'string'],
         ];
     }
@@ -66,11 +64,11 @@ class ProductsSearch extends Products
             'name_id' => $this->name_id,
             'supplier_id' => $this->supplier_id,
             'manufacturer_id' => $this->manufacturer_id,
-            'branch_id' => $this->branch_id,
-            //'size' => $this->size,
+            'store_id' => $this->store_id,
+            'size' => $this->size,
             'art' => $this->art,
         ]);
-        $query->with(['name', 'manufacturer', 'size', 'branch']);
+        $query->with(['name', 'manufacturer', 'store']);
 
         return $dataProvider;
     }
@@ -104,15 +102,15 @@ class ProductsSearch extends Products
             'name_id' => $this->name_id,
             'supplier_id' => $this->supplier_id,
             'manufacturer_id' => $this->manufacturer_id,
-            'branch_id' => $this->branch_id,
-            //'size' => $this->size,
+            'store_id' => $this->store_id,
+            'size' => $this->size,
             'art' => $this->art,
             'weight' => $this->weight,
             'probe' => $this->probe,
             'category_id' => $this->category_id
         ]);
 
-        $query->with(['prodName', 'manufacturer', 'size', 'branch']);
+        $query->with(['prodName', 'manufacturer', 'store', 'category']);
 
         return $dataProvider;
     }

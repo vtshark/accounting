@@ -9,20 +9,19 @@ use yii\web\View;
 <? $form = ActiveForm::begin([
     'id' => 'create-product-form',
     'validateOnBlur' => false
-//            'fieldConfig' => [
-//            'template' => "<div class='col-xs-12 col-sm-2'>{label}\n{input}\n{error}</div>",
-//            'labelOptions' => ['class' => 'col-lg-1 control-label'],
-//        ]
 ]);
+
+$isEditing = ($product->id) ? true : false;
 ?>
 
-    <? if ($product->id) { ?>
-        <div class="row">
-            <div class="col-xs-6 col-sm-2">
-                <?= $form->field($product, 'id')->textInput(['readonly' => 'readonly']); ?>
-            </div>
+<? if ($isEditing) { ?>
+    <div class="row">
+        <div class="col-xs-6 col-sm-2">
+            <?= $form->field($product, 'id')->textInput(['readonly' => 'readonly']); ?>
         </div>
-    <? } ?>
+    </div>
+<? } ?>
+
 <div class="row">
     <div class="col-xs-12 col-sm-2">
     <?= $form->field($product, 'manufacturer_id')->dropDownList(
@@ -57,10 +56,10 @@ use yii\web\View;
     </div>
 
     <div class="col-xs-6 col-sm-2">
-<!--    --><?//= $form->field($product, 'size')->dropDownList(
-//            ArrayHelper::map(\app\models\Sizes::getAll(), 'size', 'size'),
-//            ['prompt' => '']
-//    ); ?>
+    <?= $form->field($product, 'size')->dropDownList(
+            ArrayHelper::map(\app\models\Sizes::getAll(), 'size', 'size'),
+            ['prompt' => '']
+    ); ?>
     </div>
 
     <div class="col-xs-6 col-sm-1">
@@ -79,12 +78,21 @@ use yii\web\View;
     <?= $form->field($product, 'price_sell')->textInput(); ?>
     </div>
 
-    <div class="col-xs-12 col-sm-2">
+    <div class="col-xs-2 col-sm-1">
         <?= $form->field($product, 'supplier_id')->hiddenInput()->label(false); ?>
-        <?= $form->field($product, 'branch_id')->hiddenInput()->label(false); ?>
+        <?= $form->field($product, 'store_id')->hiddenInput()->label(false); ?>
         <?= $form->field($product, 'invoice_procur_id')->hiddenInput()->label(false); ?>
         <?= Html::submitButton('', ['class' => 'btn btn-success glyphicon glyphicon-floppy-save']) ?>
     </div>
+
+    <? if (!$isEditing) { ?>
+        <div class="col-xs-3 col-sm-1">
+            <label class="control-label" for="count-prod">Кол-во</label>
+            <?= Html::textInput($product->formName() . '[count-prod]', '1', ['class' => 'form-control']) ?>
+
+        </div>
+    <? } ?>
+
 </div>
 
 <? ActiveForm::end(); ?>

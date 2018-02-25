@@ -5,12 +5,12 @@ namespace app\models;
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Branches;
+use app\models\Stores;
 
 /**
- * BranchesSearch represents the model behind the search form about `app\models\Branches`.
+ * StoresSearch represents the model behind the search form about `app\models\Stores`.
  */
-class BranchesSearch extends Branches
+class StoresSearch extends Stores
 {
     /**
      * @inheritdoc
@@ -41,7 +41,7 @@ class BranchesSearch extends Branches
      */
     public function search($params)
     {
-        $query = Branches::find();
+        $query = Stores::find();
 
         // add conditions that should always apply here
 

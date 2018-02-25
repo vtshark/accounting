@@ -11,18 +11,20 @@ use Yii;
  * @property integer $name_id
  * @property integer $supplier_id
  * @property integer $manufacturer_id
- * @property integer $branch_id
+ * @property integer $store_id
  * @property integer $category_id
  * @property integer $price_sell
  * @property integer $price_procur
  * @property string $art
  * @property double $weight
+ * @property double $size
  * @property integer $probe
  *
  * @property ProdNames $prodName
  * @property Suppliers $supplier
  * @property Manufacturers $manufacturer
- * @property Branches $branch
+ * @property Stores $store
+ * @property ProdCategory $category
  */
 class Products extends \yii\db\ActiveRecord
 {
@@ -37,13 +39,13 @@ class Products extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name_id', 'supplier_id', 'manufacturer_id', 'branch_id', 'category_id', 'price_sell', 'invoice_procur_id', 'probe'], 'integer'],
-            [['weight', 'price_procur'], 'number'],
+            [['name_id', 'supplier_id', 'manufacturer_id', 'store_id', 'category_id', 'price_sell', 'invoice_procur_id', 'probe'], 'integer'],
+            [['weight', 'price_procur', 'size'], 'number'],
             [['art'], 'string', 'max' => 255],
             [['name_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProdNames::className(), 'targetAttribute' => ['name_id' => 'id']],
             [['supplier_id'], 'exist', 'skipOnError' => true, 'targetClass' => Suppliers::className(), 'targetAttribute' => ['supplier_id' => 'id']],
             [['manufacturer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Manufacturers::className(), 'targetAttribute' => ['manufacturer_id' => 'id']],
-            [['branch_id'], 'exist', 'skipOnError' => true, 'targetClass' => Branches::className(), 'targetAttribute' => ['branch_id' => 'id']],
+            [['store_id'], 'exist', 'skipOnError' => true, 'targetClass' => Stores::className(), 'targetAttribute' => ['store_id' => 'id']],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProdCategory::className(), 'targetAttribute' => ['category_id' => 'id']],
             [['probe'], 'exist', 'skipOnError' => true, 'targetClass' => Probe::className(), 'targetAttribute' => ['probe' => 'id']],
         ];
@@ -56,17 +58,18 @@ class Products extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'name_id' => 'Name ID',
-            'supplier_id' => 'Supplier ID',
-            'manufacturer_id' => 'Manufacturer ID',
-            'branch_id' => 'Branch ID',
-            'art' => 'Art',
-            'category_id' => 'Category ID',
-            'weight' => 'Weight',
-            'price_sell' => 'Price Sell',
-            'price_procur' => 'Price Procur',
-            'invoice_procur_id' => 'Invoice Procur ID',
-            'probe' => 'Probe',
+            'name_id' => 'Наименование',
+            'supplier_id' => 'Поставщик',
+            'manufacturer_id' => 'Изготовитель',
+            'store_id' => 'Филиал',
+            'art' => 'Артикул',
+            'category_id' => 'Категория',
+            'weight' => 'Вес',
+            'price_sell' => 'Цена продажи',
+            'price_procur' => 'Цена закупки',
+            'invoice_procur_id' => 'Накладная закупки',
+            'probe' => 'Проба',
+            'size' => 'Размер',
         ];
     }
 
@@ -97,9 +100,9 @@ class Products extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getBranch()
+    public function getStore()
     {
-        return $this->hasOne(Branches::className(), ['id' => 'branch_id']);
+        return $this->hasOne(Stores::className(), ['id' => 'store_id']);
     }
 
     public function getCategory()

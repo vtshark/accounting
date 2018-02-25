@@ -27,11 +27,11 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             [
-                'attribute' => 'branch_id',
+                'attribute' => 'store_id',
                 'value' => function($data) {
-                    return $data->branch->name;
+                    return $data->store->name;
                 },
-                'filter' => ArrayHelper::map(\app\models\Branches::find()->all(), 'id','name')
+                'filter' => ArrayHelper::map(\app\models\Stores::find()->all(), 'id','name')
             ],
             'description',
             [

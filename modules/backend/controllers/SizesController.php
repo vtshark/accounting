@@ -3,16 +3,16 @@
 namespace app\modules\backend\controllers;
 
 use Yii;
-use app\models\Branches;
-use app\models\BranchesSearch;
+use app\models\Sizes;
+use yii\data\ActiveDataProvider;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * BranchesController implements the CRUD actions for Branches model.
+ * SizesController implements the CRUD actions for Sizes model.
  */
-class BranchesController extends Controller
+class SizesController extends Controller
 {
     /**
      * @inheritdoc
@@ -30,24 +30,25 @@ class BranchesController extends Controller
     }
 
     /**
-     * Lists all Branches models.
+     * Lists all Sizes models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new BranchesSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        $dataProvider = new ActiveDataProvider([
+            'query' => Sizes::find(),
+        ]);
 
         return $this->render('index', [
-            'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
         ]);
     }
 
     /**
-     * Displays a single Branches model.
-     * @param integer $id
+     * Displays a single Sizes model.
+     * @param double $id
      * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
@@ -57,47 +58,49 @@ class BranchesController extends Controller
     }
 
     /**
-     * Creates a new Branches model.
+     * Creates a new Sizes model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new Branches();
+        $model = new Sizes();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
+            return $this->redirect(['view', 'id' => $model->size]);
         }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
-     * Updates an existing Branches model.
+     * Updates an existing Sizes model.
      * If update is successful, the browser will be redirected to the 'view' page.
-     * @param integer $id
+     * @param double $id
      * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
+            return $this->redirect(['view', 'id' => $model->size]);
         }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**
-     * Deletes an existing Branches model.
+     * Deletes an existing Sizes model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
-     * @param integer $id
+     * @param double $id
      * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
@@ -107,18 +110,18 @@ class BranchesController extends Controller
     }
 
     /**
-     * Finds the Branches model based on its primary key value.
+     * Finds the Sizes model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
-     * @param integer $id
-     * @return Branches the loaded model
+     * @param double $id
+     * @return Sizes the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = Branches::findOne($id)) !== null) {
+        if (($model = Sizes::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

@@ -23,7 +23,7 @@ class InvoiceProcurementController extends Controller
             $invoiceProcurement = InvoiceProcurement::findOne($procurement_invoice_id);
             $product->supplier_id = $invoiceProcurement->supplier_id;
             /**@todo переделать **/
-            $product->branch_id = 1;
+            $product->store_id = 1;
             $product->invoice_procur_id = $invoiceProcurement->id;
         } else {
             $invoiceProcurement = new InvoiceProcurement();

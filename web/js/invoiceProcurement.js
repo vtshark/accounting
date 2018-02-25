@@ -97,48 +97,63 @@ $(document).ready(function () {
  * @param newRecord
  */
 function addProductRow(product, newRecord) {
-    var newDataArr = [];
-    for (var key in product) {
-        newDataArr.push(product[key]);
-    }
 
+    //console.log(product.length); return false;
+
+    var newDataArr = [];
+    var newProduct = [];
+
+    for(var i = 0; i < product.length; i++) {
+        newProduct = [];
+        //console.log(product[i]);
+        for (var key in product[i]) {
+            newProduct.push(product[i][key]);
+            //console.log(product[i][key]);
+        }
+        newDataArr.push(newProduct);
+    }
+    // console.log(newDataArr);
+    // return false;
     if (newRecord) {
-        var newRowStr = '<tr data-key="' + product.id + '"><td></td>';
-            for (var i = 0; i < newDataArr.length; i++) {
-                newRowStr += '<td>' + newDataArr[i] + '</td>'
+
+        if (!$('#products_table > tbody tr a span').length) {
+             $.pjax.reload({container: '#products_list'});
+        } else {
+
+            var newRowStr = '';
+            for (var j = 0; j < newDataArr.length; j++) {
+                //product = newDataArr[i];
+                newRowStr += '<tr data-key="' + newDataArr[j][0] + '"><td></td>';
+                for (i = 0; i < newDataArr[j].length; i++) {
+                    newRowStr += '<td>' + newDataArr[j][i] + '</td>'
+                }
+
+                // клонирование ячейки  с иконками из последнего столбца
+                // и обновление аттрибутов для новой записи в таблице
+                //console.log($('#products_table > tbody tr a span').length);
+
+                var cloneTd = $('#products_table > tbody tr').first().children(':last-child').clone();
+
+                cloneTd.find('a span').each(function (elem) {
+                    var href = $(this).data('href')
+                    if (href) {
+                        var arr = href.split("/");
+                        arr[arr.length - 1] = newDataArr[j][0];
+                        var newHref = arr.join('/')
+                        $(this).attr('data-href', newHref);
+                    }
+                });
+                newRowStr += '<td>' + cloneTd.html() + '</td>';
+                newRowStr += '</tr>';
             }
 
-        // клонирование ячейки  с иконками из последнего столбца
-        // и обновление аттрибутов для новой записи в таблице
-        console.log($('#products_table > tbody tr a span').length);
-
-        if ($('#products_table > tbody tr a span').length) {
-
-            var cloneTd = $('#products_table > tbody tr').first().children(':last-child').clone();
-
-            cloneTd.find('a span').each(function (elem) {
-                var href = $(this).data('href')
-                if (href) {
-                    var arr = href.split("/");
-                    arr[arr.length - 1] = product.id;
-                    var newHref = arr.join('/')
-                    $(this).attr('data-href', newHref);
-                }
-            });
-            newRowStr += '<td>' + cloneTd.html() + '</td>';
-        } else {
-            $.pjax.reload({container:'#products_list'});
+            $('#products_table > tbody').prepend(newRowStr);
         }
-
-
-
-        newRowStr += '</tr>';
-        $('#products_table > tbody').prepend(newRowStr);
 
     } else {
         $('#products_table > tbody tr[data-key="' + currentRow + '"]').children().each(function(i,elem) {
-            if (newDataArr[ i - 1 ]) {
-                elem.innerHTML = newDataArr[i - 1];
+            if (newDataArr[0][ i - 1 ]) {
+                elem.innerHTML = newDataArr[0][i - 1];
             }
         });
     }

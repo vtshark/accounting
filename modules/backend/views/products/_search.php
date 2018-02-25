@@ -23,7 +23,7 @@ use yii\widgets\ActiveForm;
 
     <?= $form->field($model, 'manufacturer_id') ?>
 
-    <?= $form->field($model, 'branch_id') ?>
+    <?= $form->field($model, 'store_id') ?>
 
     <?php // echo $form->field($model, 'size') ?>
 

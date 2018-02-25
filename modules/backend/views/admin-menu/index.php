@@ -7,7 +7,7 @@ use yii\helpers\Html;
 <br>
 <div><?= Html::a('Изготовители', ['/backend/manufacturers'], ['class' => 'btn btn-success']) ?></div>
 <br>
-<div><?= Html::a('Филиалы', ['/backend/branches'], ['class' => 'btn btn-success']) ?></div>
+<div><?= Html::a('Филиалы', ['/backend/stores'], ['class' => 'btn btn-success']) ?></div>
 <br>
 <div><?= Html::a('Наименования', ['/backend/prod-names'], ['class' => 'btn btn-success']) ?></div>
 <br>

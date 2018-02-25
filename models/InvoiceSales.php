@@ -8,13 +8,13 @@ use Yii;
  * This is the model class for table "invoice_sales".
  *
  * @property integer $id
- * @property integer $branch_id
+ * @property integer $store_id
  * @property string $description
  * @property integer $create_at
  * @property integer $user_id
  * @property integer $is_closed
  *
- * @property Branches $branch
+ * @property Stores $store
  * @property Users $user
  */
 class InvoiceSales extends \yii\db\ActiveRecord
@@ -33,9 +33,9 @@ class InvoiceSales extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['branch_id', 'create_at', 'user_id', 'is_closed'], 'integer'],
+            [['store_id', 'create_at', 'user_id', 'is_closed'], 'integer'],
             [['description'], 'string', 'max' => 255],
-            [['branch_id'], 'exist', 'skipOnError' => true, 'targetClass' => Branches::className(), 'targetAttribute' => ['branch_id' => 'id']],
+            [['store_id'], 'exist', 'skipOnError' => true, 'targetClass' => Stores::className(), 'targetAttribute' => ['store_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -47,7 +47,7 @@ class InvoiceSales extends \yii\db\ActiveRecord
     {
         return [
             'id' => 'ID',
-            'branch_id' => 'Branch ID',
+            'store_id' => 'Store ID',
             'description' => 'Description',
             'create_at' => 'Create At',
             'user_id' => 'User ID',
@@ -58,9 +58,9 @@ class InvoiceSales extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getBranch()
+    public function getStore()
     {
-        return $this->hasOne(Branches::className(), ['id' => 'branch_id']);
+        return $this->hasOne(Stores::className(), ['id' => 'store_id']);
     }
 
     /**

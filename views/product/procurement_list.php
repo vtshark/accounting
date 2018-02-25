@@ -41,11 +41,11 @@ use yii\helpers\ArrayHelper;
             },
             'filter' => ArrayHelper::map(\app\models\ProdNames::getAll(), 'id', 'name')
         ],
-//        [
-//            'attribute' => 'size',
-//            'headerOptions' => ['style' => 'width:60px;'],
-//            'filter' => ArrayHelper::map(\app\models\Sizes::getAll(), 'size', 'size')
-//        ],
+        [
+            'attribute' => 'size',
+            'headerOptions' => ['style' => 'width:60px;'],
+            'filter' => ArrayHelper::map(\app\models\Sizes::getAll(), 'size', 'size')
+        ],
         'art',
         [
             'attribute' => 'weight',
@@ -63,11 +63,11 @@ use yii\helpers\ArrayHelper;
             'footer' => \app\models\ProductsSearch::getTotal($dataProvider->models, 'price_sell'),
         ],
         [
-            'attribute' => 'branch_id',
+            'attribute' => 'store_id',
             'headerOptions' => ['style' => 'width:100px;'],
-            'filter' => ArrayHelper::map(\app\models\Branches::getAll(), 'id', 'name'),
+            'filter' => ArrayHelper::map(\app\models\Stores::getAll(), 'id', 'name'),
             'value' => function($data) {
-                return $data->branch->name;
+                return $data->store->name;
             }
         ],
 
