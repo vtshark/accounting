@@ -18,7 +18,7 @@ class m180225_151240_probeDataInsert extends Migration
                            ["id"],
                             [
     [
-        'id' => '1',
+        'id' => '0',
     ],
     [
         'id' => '375',
