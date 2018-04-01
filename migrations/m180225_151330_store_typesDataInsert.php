@@ -19,11 +19,15 @@ class m180225_151330_store_typesDataInsert extends Migration
                             [
     [
         'id' => '1',
-        'name' => 'Магазин',
+        'name' => 'Временный',
     ],
     [
         'id' => '2',
         'name' => 'Склад',
+    ],
+    [
+        'id' => '3',
+        'name' => 'Магазин',
     ],
 ]
         );

@@ -6,17 +6,17 @@ $(document).ready(function () {
         position: 'fixed'
     });
 
-    $('.invoice-menu A').click(function(e) {
+    $('#invoice-menu A').click(function(e) {
         e.preventDefault();
         var id = $(this).attr('id');
         id = '#' + id.replace('li', 'btn');
         $(id).trigger('click');
     });
 
-    $('.nav-tabs a').click(function (e) {
-        e.preventDefault()
-        $(this).tab('show')
-    })
+    $('.nav-tabs .procurement-nav-a').click(function (e) {
+        e.preventDefault();
+        $(this).tab('show');
+    });
     
     $('#choose-id-invoice-btn').click(function() {
         $('#choose-id-invoice-modal .modal-body').load($(this).data('href'));
@@ -135,11 +135,11 @@ function addProductRow(product, newRecord) {
                 var cloneTd = $('#products_table > tbody tr').first().children(':last-child').clone();
 
                 cloneTd.find('a span').each(function (elem) {
-                    var href = $(this).data('href')
+                    var href = $(this).data('href');
                     if (href) {
                         var arr = href.split("/");
                         arr[arr.length - 1] = newDataArr[j][0];
-                        var newHref = arr.join('/')
+                        var newHref = arr.join('/');
                         $(this).attr('data-href', newHref);
                     }
                 });

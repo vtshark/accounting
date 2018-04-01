@@ -36,4 +36,6 @@ tfoot {
 .dropdown-menu {
     z-index: 1002;
 }
-
+.nav > li.disabled {
+    pointer-events: none;
+}

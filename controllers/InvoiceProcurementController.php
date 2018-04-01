@@ -4,6 +4,8 @@ namespace app\controllers;
 
 use app\models\Products;
 use app\models\ProductsSearch;
+use app\models\ProductsTmp;
+use app\models\ProductsTmpSearch;
 use app\models\Suppliers;
 use Yii;
 use app\models\InvoiceProcurement;
@@ -16,8 +18,13 @@ class InvoiceProcurementController extends Controller
 {
 
     public function actionIndex($procurement_invoice_id = null) {
-        $searchModel = new ProductsSearch();
-        $product = new Products();
+        $store_id = Yii::$app->request->get('store') ?: 1;
+        if ($store_id == 1) {
+            $searchModel = new ProductsTmpSearch();
+        } else {
+            $searchModel = new ProductsSearch();
+        }
+        $product = new ProductsTmp();
 
         if ($procurement_invoice_id) {
             $invoiceProcurement = InvoiceProcurement::findOne($procurement_invoice_id);
@@ -26,17 +33,18 @@ class InvoiceProcurementController extends Controller
             $product->store_id = 1;
             $product->invoice_procur_id = $invoiceProcurement->id;
         } else {
-            $invoiceProcurement = new InvoiceProcurement();
+            $invoiceProcurement = null;
         }
 
-        $dataProvider = $searchModel->searchProcurement(Yii::$app->request->queryParams);
+        $dataProvider = $searchModel->searchProcurement(Yii::$app->request->queryParams, $searchModel);
 
         return $this->render('index',
             [
                 'invoiceProcurement' => $invoiceProcurement,
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
-                'product' => $product
+                'product' => $product,
+                'store_id' => $store_id
             ]
         );
     }

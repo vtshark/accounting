@@ -48,4 +48,12 @@ class Stores extends \yii\db\ActiveRecord
         return self::find()->asArray()->all();
     }
 
+    /**
+     * @param array $params
+     * @return array|bool
+     */
+    public static function getStores(array $params) {
+        return self::find()->where($params)->asArray()->indexBy('id')->all();
+    }
+
 }

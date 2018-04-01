@@ -1,18 +1,22 @@
 <?php
 
-use yii\db\Schema;
 use yii\db\Migration;
 
-class m180225_105729_products extends Migration
+/**
+ * Class m180401_154947_products_tmp
+ */
+class m180401_154947_products_tmp extends Migration
 {
-    const TABLE = '{{%products}}';
-
+    const TABLE = '{{%products_tmp}}';
     public function init()
     {
         $this->db = 'db';
         parent::init();
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function safeUp()
     {
         $tableOptions = 'ENGINE=InnoDB';
@@ -66,4 +70,5 @@ class m180225_105729_products extends Migration
         $this->dropIndex('size', self::TABLE);
         $this->dropTable(self::TABLE);
     }
+
 }

@@ -19,27 +19,33 @@ class m180225_151411_storesDataInsert extends Migration
             [
                 [
                     'id' => '1',
+                    'name' => 'Временный',
+                    'status' => '1',
+                    'store_type_id' => '1',
+                ],
+                [
+                    'id' => '2',
                     'name' => 'Склад-Киев',
                     'status' => '1',
                     'store_type_id' => '2',
                 ],
                 [
-                    'id' => '2',
+                    'id' => '3',
                     'name' => 'Склад-Донецк',
                     'status' => '1',
                     'store_type_id' => '2',
                 ],
                 [
-                    'id' => '3',
+                    'id' => '4',
                     'name' => 'Ашан',
                     'status' => '1',
-                    'store_type_id' => '1',
+                    'store_type_id' => '3',
                 ],
                 [
-                    'id' => '4',
+                    'id' => '5',
                     'name' => 'Марио',
                     'status' => '1',
-                    'store_type_id' => '1',
+                    'store_type_id' => '3',
                 ],
             ]
         );

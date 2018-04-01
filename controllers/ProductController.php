@@ -2,7 +2,8 @@
 
 namespace app\controllers;
 
-use app\models\Products;
+use Yii;
+use app\models\ProductsTmp;
 use yii\web\Controller;
 
 /**
@@ -12,24 +13,24 @@ use yii\web\Controller;
 class ProductController extends Controller
 {
     public function actionCreate() {
-        if (\Yii::$app->request->isAjax && \Yii::$app->request->isPost) {
+        if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
             $outData = [];
-            $post = \Yii::$app->request->post();
-            $newRecord = (empty($post['Products']['id'])) ? true : false;
+            $post = Yii::$app->request->post();
+            $newRecord = (empty($post['ProductsTmp']['id'])) ? true : false;
 
             // processing of the list of products
-            if ($newRecord && isset($post['Products']['count-prod']) && (int)$post['Products']['count-prod'] > 1 ) {
+            if ($newRecord && isset($post['ProductsTmp']['count-prod']) && (int)$post['ProductsTmp']['count-prod'] > 1 ) {
 
-                $count = (int)$post['Products']['count-prod'];
+                $count = (int)$post['ProductsTmp']['count-prod'];
 
                 /**@todo доработать */
                 if ($count >= 300) {
                     return json_encode(['error' => true, 'data' => null]);
                 }
 
-                unset($post['Products']['count-prod']);
+                unset($post['ProductsTmp']['count-prod']);
                 for($i = 1; $i <= $count; $i++) {
-                    $product = new Products();
+                    $product = new ProductsTmp();
                     $product->load($post);
                     if (!$product->save()) {
                         return json_encode(['error' => true, 'data' => $product->getErrors()]);
@@ -43,7 +44,7 @@ class ProductController extends Controller
             } else {
                 // processing of the single product
 
-                $product = ($newRecord) ? new Products() : Products::findOne($post['Products']['id']);
+                $product = ($newRecord) ? new ProductsTmp() : ProductsTmp::findOne($post['ProductsTmp']['id']);
 
                 $product->load($post);
                 if (!$product->save()) {
@@ -58,10 +59,10 @@ class ProductController extends Controller
     }
 
     /**
-     * @param Products $product
+     * @param ProductsTmp $product
      * @return array
      */
-    public static function prepareDataToTable(Products $product) {
+    public static function prepareDataToTable(ProductsTmp $product) {
         return [
             'id' => $product->id,
             'manufacturer' => $product->manufacturer->name,
@@ -78,7 +79,7 @@ class ProductController extends Controller
     }
 
     public function actionUpdateForm($product_id) {
-        $product = Products::findOne($product_id);
+        $product = ProductsTmp::findOne($product_id);
         return $this->renderAjax('create_form', [
             'product' => $product
         ]);
@@ -88,7 +89,7 @@ class ProductController extends Controller
         /**
          * @todo нужны проверочки
          */
-        $product = Products::findOne($product_id);
+        $product = ProductsTmp::findOne($product_id);
         if ($product->delete()) {
             return json_encode(['error' => false, 'data' => ['id' => $product_id]]);
         }

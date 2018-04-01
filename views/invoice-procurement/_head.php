@@ -45,30 +45,58 @@ Modal::begin([
     ],
 ]);
 Modal::end();
+if ($invoiceProcurement) {
+    $invoiceDescription = $invoiceProcurement->id . " " .
+        $invoiceProcurement->supplier->name_short . " " .
+    $disabledClass = '';
+    $disabledAddProd = '';
+} else {
+    $invoiceDescription = "";
+    $disabledClass = 'disabled';
+    $disabledAddProd = 'disabled';
+}
+if ($store_id <> 1) {
+    $disabledAddProd = 'disabled';
+}
+$stores = \app\models\Stores::getStores(['store_type_id' => [1, 2]]);
 ?>
 
 
 <ul class="nav nav-tabs">
     <li role="presentation" class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            <span><?= $invoice = $invoiceProcurement->id ." ". $invoiceProcurement->supplier->name_short ." ". $invoiceProcurement->description ?>
-            </span>
-            Накладная <span class="caret"></span>
+            Накладная: <?= $invoiceDescription ?><span class="caret"></span>
         </a>
-        <ul class="dropdown-menu invoice-menu">
+        <ul class="dropdown-menu" id="invoice-menu">
             <li role="presentation"><a href="#" id="choose-id-invoice-li">Поиск накладной</a></li>
             <li role="separator" class="divider"></li>
             <li role="presentation"><a href="#" id="create-invoice-li">Создание накладной</a></li>
         </ul>
 
     </li>
-    <li role="presentation"><a href="#add-product">Добавить изделие</a></li>
-    <li role="presentation"><a href="#price">Наценка</a></li>
-    <li role="presentation" class="dropdown">
+
+    <li role="presentation">
+        <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+            Филиал: <?=$stores[$store_id]['name']?><span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu" id="choose-store">
+            <?php
+            foreach ($stores as $store) { ?>
+                <li role="presentation">
+                    <a href="<?= Url::current(['store' => $store['id'] ]) ?>"><?= $store['name'] ?></a>
+                </li>
+                <li role="separator" class="divider"></li>
+            <?  }?>
+        </ul>
+    </li>
+
+    <li role="presentation" class="<?=$disabledAddProd?>"><a href="#add-product" class="procurement-nav-a">Добавить изделие</a></li>
+    <li role="presentation" class="<?=$disabledClass?>"><a href="#price" class="procurement-nav-a">Наценка</a></li>
+    <li role="presentation" class="dropdown <?=$disabledClass?>">
         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             Печать <span class="caret"></span>
         </a>
-        <ul class="dropdown-menu invoice-menu">
+        <ul class="dropdown-menu">
             <li role="presentation"><a href="#" id="choose-id-invoice-li">Печать накладной</a></li>
             <li role="separator" class="divider"></li>
             <li role="presentation"><a href="#" id="create-invoice-li">Печать бирок</a></li>
@@ -77,16 +105,19 @@ Modal::end();
     </li>
 
     <li role="presentation">
-
         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            Филиал <span class="caret"></span>
+            Перевести на филиал<span class="caret"></span>
         </a>
-        <ul class="dropdown-menu invoice-menu" id="choose-store">
-            <li role="presentation"><a href="#">Временный</a></li>
-            <li role="separator" class="divider"></li>
-            <li role="presentation"><a href="#">Склад-Киев</a></li>
-            <li role="separator" class="divider"></li>
-            <li role="presentation"><a href="#">Склад-Донецк</a></li>
+        <ul class="dropdown-menu" id="choose-store">
+            <?php
+            foreach ($stores as $store) {
+                if ($store['id'] == 1) continue;
+            ?>
+                <li role="separator" class="divider"></li>
+                <li role="presentation">
+                    <a href="#"><?= $store['name'] ?></a>
+                </li>
+            <?  }?>
         </ul>
 
     </li>
