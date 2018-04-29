@@ -29,7 +29,7 @@ $(document).ready(function () {
     $('#create-product-form-btn').click(function() {
         $('#create-product-wrapper').load($(this).data('href'));
         //$.pjax.reload({container:'#products_list'});
-    })
+    });
     $('#products_list')
         .on('click', '.edit-product', {}, function (e) {
             currentRow = $(this).closest('TR').data('key');
@@ -87,6 +87,11 @@ $(document).ready(function () {
                 }
             });
         });
+
+    $("#choose-store-for-transfer-products A").click(function(e) {
+        e.preventDefault();
+        transferProducts($(this));
+    });
 
 });
 
@@ -162,4 +167,39 @@ function addProductRow(product, newRecord) {
 
 function delProductRow(idProduct) {
     $('#products_table > tbody tr[data-key="' + idProduct + '"]').remove();
+}
+
+function transferProducts(currentObj) {
+    var invoice_id = $("#invoice-id").val();
+    bootbox.confirm({
+        message: "Выполнить перевод изделий на филиал <" + currentObj.text() + ">?",
+        buttons: {
+            confirm: {label: 'Ok', className: 'btn-default' },
+            cancel: {label: 'Отмена', className: 'btn-default' }
+        },
+        callback: function (result) {
+            if (result) {
+                $.ajax({
+                    url: "/product/transfer-from-tmp-store/",
+                    data: {store_id: currentObj.data('store-id'), invoice_id: invoice_id},
+                    type: 'POST',
+                    dataType: 'json',
+                    success: function (json) {
+                        //console.log(json);
+                        if (json.error) {
+                            console.log(json.errors);
+                        } else {
+                            bootbox.alert("Переведено " + json.data.count + " изделий на филиал <" + currentObj.text() + ">");
+                            $.pjax.reload({container: '#products_list'});
+                        }
+                    },
+                    error: function (json) {
+                        console.log('Error!');
+                    }
+                });
+
+                console.log(currentObj.data('store-id'));
+            }
+        }
+    });
 }

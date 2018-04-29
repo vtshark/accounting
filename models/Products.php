@@ -19,6 +19,7 @@ use Yii;
  * @property double $weight
  * @property double $size
  * @property integer $probe
+ * @property integer  invoice_procur_id
  *
  * @property ProdNames $prodName
  * @property Suppliers $supplier

@@ -73,9 +73,9 @@ class ProductsSearch extends Products
         return $dataProvider;
     }
 
-    public function searchProcurement($params, Products $model)
+    public function searchProcurement($params)
     {
-        $query = $model::find();
+        $query = parent::find();
         if (!isset($params['sort'])) {
             $query->orderBy(['id' => SORT_DESC]);
         }

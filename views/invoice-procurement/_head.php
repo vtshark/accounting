@@ -55,13 +55,16 @@ if ($invoiceProcurement) {
     $disabledClass = 'disabled';
     $disabledAddProd = 'disabled';
 }
-if ($store_id <> 1) {
+
+$store_type_id = Yii::$app->request->get('store_type') ?: 1;
+if ($store_type_id <> 1) {
     $disabledAddProd = 'disabled';
 }
 $stores = \app\models\Stores::getStores(['store_type_id' => [1, 2]]);
+$storeTypes = \app\models\StoreTypes::getTypes(['id' => [1, 2]]);
 ?>
 
-
+<input id="invoice-id" type="hidden" value="<?= $invoiceProcurement->id ?>">
 <ul class="nav nav-tabs">
     <li role="presentation" class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -77,13 +80,13 @@ $stores = \app\models\Stores::getStores(['store_type_id' => [1, 2]]);
 
     <li role="presentation">
         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
-            Филиал: <?=$stores[$store_id]['name']?><span class="caret"></span>
+            Филиал: <?=$storeTypes[$store_type_id]['name']?><span class="caret"></span>
         </a>
         <ul class="dropdown-menu" id="choose-store">
             <?php
-            foreach ($stores as $store) { ?>
+            foreach ($storeTypes as $type) { ?>
                 <li role="presentation">
-                    <a href="<?= Url::current(['store' => $store['id'] ]) ?>"><?= $store['name'] ?></a>
+                    <a href="<?= Url::current(['store_type' => $type['id'] ]) ?>"><?= $type['name'] ?></a>
                 </li>
                 <li role="separator" class="divider"></li>
             <?  }?>
@@ -104,20 +107,20 @@ $stores = \app\models\Stores::getStores(['store_type_id' => [1, 2]]);
 
     </li>
 
-    <li role="presentation">
+    <li role="presentation" class="<?=$disabledClass?>">
         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             Перевести на филиал<span class="caret"></span>
         </a>
-        <ul class="dropdown-menu" id="choose-store">
+        <ul class="dropdown-menu" id="choose-store-for-transfer-products">
             <?php
             foreach ($stores as $store) {
                 if ($store['id'] == 1) continue;
             ?>
                 <li role="separator" class="divider"></li>
                 <li role="presentation">
-                    <a href="#"><?= $store['name'] ?></a>
+                    <a href="#" data-store-id="<?= $store['id']?>"><?= $store['name'] ?></a>
                 </li>
-            <?  }?>
+            <? } ?>
         </ul>
 
     </li>

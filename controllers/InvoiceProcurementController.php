@@ -6,6 +6,8 @@ use app\models\Products;
 use app\models\ProductsSearch;
 use app\models\ProductsTmp;
 use app\models\ProductsTmpSearch;
+use app\models\Stores;
+use app\models\StoreTypes;
 use app\models\Suppliers;
 use Yii;
 use app\models\InvoiceProcurement;
@@ -18,8 +20,11 @@ class InvoiceProcurementController extends Controller
 {
 
     public function actionIndex($procurement_invoice_id = null) {
-        $store_id = Yii::$app->request->get('store') ?: 1;
-        if ($store_id == 1) {
+        // по умолчанию используется временный филиал
+        $store_type_id = Yii::$app->request->get('store_type') ?: 1;
+        $storeType = StoreTypes::findOne($store_type_id);
+
+        if ($storeType->id == 1) {
             $searchModel = new ProductsTmpSearch();
         } else {
             $searchModel = new ProductsSearch();
@@ -36,15 +41,14 @@ class InvoiceProcurementController extends Controller
             $invoiceProcurement = null;
         }
 
-        $dataProvider = $searchModel->searchProcurement(Yii::$app->request->queryParams, $searchModel);
+        $dataProvider = $searchModel->searchProcurement(Yii::$app->request->queryParams);
 
         return $this->render('index',
             [
                 'invoiceProcurement' => $invoiceProcurement,
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
-                'product' => $product,
-                'store_id' => $store_id
+                'product' => $product
             ]
         );
     }

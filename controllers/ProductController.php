@@ -2,6 +2,7 @@
 
 namespace app\controllers;
 
+use app\models\Products;
 use Yii;
 use app\models\ProductsTmp;
 use yii\web\Controller;
@@ -94,5 +95,31 @@ class ProductController extends Controller
             return json_encode(['error' => false, 'data' => ['id' => $product_id]]);
         }
         return json_encode(['error' => true]);
+    }
+
+    public function actionTransferFromTmpStore() {
+        if (!Yii::$app->request->isAjax || !Yii::$app->request->isPost) {
+            return json_encode(['error' => true]);
+        }
+        $store_id = Yii::$app->request->getBodyParam('store_id');
+        $invoice_id = Yii::$app->request->getBodyParam('invoice_id');
+        if (!$store_id || !$invoice_id) {
+            return json_encode(['error' => true]);
+        }
+
+        $productsTmp = ProductsTmp::find()->where(['invoice_procur_id' => $invoice_id])->asArray()->all();
+        foreach ($productsTmp as $productTmp) {
+            $product = new Products();
+            $product->setAttributes($productTmp);
+            $product->setAttribute('store_id', $store_id);
+            if (!$product->save()) {
+                return json_encode(['error' => true, 'errors' => $product->getErrors()]);
+            }
+            ProductsTmp::deleteAll(['id' => $productTmp['id']]);
+        }
+        $count = count($productsTmp);
+        return json_encode(['error' => false, 'data' => ['count' => $count]]);
+
+
     }
 }

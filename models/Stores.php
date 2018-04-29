@@ -10,6 +10,9 @@ use Yii;
  * @property integer $id
  * @property string $name
  * @property integer $status
+ * @property integer $store_type_id
+ *
+ * @property StoreTypes $type
  */
 class Stores extends \yii\db\ActiveRecord
 {
@@ -29,6 +32,7 @@ class Stores extends \yii\db\ActiveRecord
         return [
             [['status'], 'integer'],
             [['name'], 'string', 'max' => 255],
+            [['store_type_id'], 'exist', 'skipOnError' => true, 'targetClass' => StoreTypes::className(), 'targetAttribute' => ['store_type_id' => 'id']],
         ];
     }
 
@@ -49,11 +53,19 @@ class Stores extends \yii\db\ActiveRecord
     }
 
     /**
-     * @param array $params
+     * @return \yii\db\ActiveQuery
+     */
+    public function getType()
+    {
+        return $this->hasOne(StoreTypes::className(), ['id' => 'store_type_id']);
+    }
+
+    /**
+     * @param array $conditions
      * @return array|bool
      */
-    public static function getStores(array $params) {
-        return self::find()->where($params)->asArray()->indexBy('id')->all();
+    public static function getStores(array $conditions) {
+        return self::find()->where($conditions)->asArray()->indexBy('id')->all();
     }
 
 }
