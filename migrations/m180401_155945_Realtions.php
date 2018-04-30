@@ -67,6 +67,11 @@ class m180401_155945_Realtions extends Migration
             '{{%suppliers}}','id',
             'SET NULL','NO ACTION'
         );
+        $this->addForeignKey('fk_products_tmp_user_id',
+            self::TABLE,'user_id',
+            '{{%users}}','id',
+            'SET NULL','NO ACTION'
+        );
     }
 
     public function safeDown()
@@ -81,5 +86,6 @@ class m180401_155945_Realtions extends Migration
         $this->dropForeignKey('fk_products_tmp_size', self::TABLE);
         $this->dropForeignKey('fk_products_tmp_store_id', self::TABLE);
         $this->dropForeignKey('fk_products_tmp_supplier_id', self::TABLE);
+        $this->dropForeignKey('fk_products_tmp_user_id', self::TABLE);
     }
 }

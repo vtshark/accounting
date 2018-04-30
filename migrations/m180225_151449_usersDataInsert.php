@@ -15,11 +15,11 @@ class m180225_151449_usersDataInsert extends Migration
     public function safeUp()
     {
         $this->batchInsert('{{%users}}',
-                           ["id", "login", "password"],
+                           ["id", "username", "password"],
                             [
     [
         'id' => '1',
-        'login' => 'admin',
+        'username' => 'admin',
         'password' => '123',
     ],
 ]

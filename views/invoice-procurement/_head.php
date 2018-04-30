@@ -55,8 +55,8 @@ if ($invoiceProcurement) {
     $disabledClass = 'disabled';
     $disabledAddProd = 'disabled';
 }
-
-$store_type_id = Yii::$app->request->get('store_type') ?: 1;
+// по умолчанию используется тип "склад"
+$store_type_id = Yii::$app->request->get('store_type') ?: 2;
 if ($store_type_id <> 1) {
     $disabledAddProd = 'disabled';
 }

@@ -2,10 +2,11 @@
 
 namespace app\controllers;
 
-use app\models\Products;
 use Yii;
 use app\models\ProductsTmp;
+use app\models\Products;
 use yii\web\Controller;
+use yii\filters\AccessControl;
 
 /**
  * Class ProductController
@@ -13,11 +14,32 @@ use yii\web\Controller;
  */
 class ProductController extends Controller
 {
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ]
+        ];
+    }
+
     public function actionCreate() {
         if (Yii::$app->request->isAjax && Yii::$app->request->isPost) {
+            $user_id = Yii::$app->user->id;
             $outData = [];
             $post = Yii::$app->request->post();
-            $newRecord = (empty($post['ProductsTmp']['id'])) ? true : false;
+
+            $productModel = (isset($post['Products'])) ? 'Products' : 'ProductsTmp';
+            $newRecord = (empty($post[$productModel]['id'])) ? true : false;
 
             // processing of the list of products
             if ($newRecord && isset($post['ProductsTmp']['count-prod']) && (int)$post['ProductsTmp']['count-prod'] > 1 ) {
@@ -33,6 +55,7 @@ class ProductController extends Controller
                 for($i = 1; $i <= $count; $i++) {
                     $product = new ProductsTmp();
                     $product->load($post);
+                    $product->user_id = $user_id;
                     if (!$product->save()) {
                         return json_encode(['error' => true, 'data' => $product->getErrors()]);
                     } else {
@@ -44,10 +67,16 @@ class ProductController extends Controller
 
             } else {
                 // processing of the single product
-
-                $product = ($newRecord) ? new ProductsTmp() : ProductsTmp::findOne($post['ProductsTmp']['id']);
+                if (!$newRecord) {
+                    $product = ("app\models\\" . $productModel)::findOne($post[$productModel]['id']);
+                } else {
+                    $product = new ProductsTmp();
+                }
 
                 $product->load($post);
+                if ($newRecord) {
+                    $product->user_id = $user_id;
+                }
                 if (!$product->save()) {
                     return json_encode(['error' => true, 'data' => $product->getErrors()]);
                 } else {
@@ -60,10 +89,10 @@ class ProductController extends Controller
     }
 
     /**
-     * @param ProductsTmp $product
+     * @param Products $product
      * @return array
      */
-    public static function prepareDataToTable(ProductsTmp $product) {
+    public static function prepareDataToTable(Products $product) {
         return [
             'id' => $product->id,
             'manufacturer' => $product->manufacturer->name,
@@ -79,18 +108,21 @@ class ProductController extends Controller
         ];
     }
 
-    public function actionUpdateForm($product_id) {
-        $product = ProductsTmp::findOne($product_id);
+    public function actionUpdateForm($product_id, $store_type_id) {
+        $prodModel = ($store_type_id == 1) ? "ProductsTmp" : "Products";
+        //echo "<pre>" . print_r( $prodModel,1) . "</pre>"; die;
+        $product = ("app\models\\" . $prodModel)::findOne($product_id);
         return $this->renderAjax('create_form', [
             'product' => $product
         ]);
     }
 
-    public function actionDelete($product_id) {
+    public function actionDelete($product_id, $store_type_id) {
         /**
          * @todo нужны проверочки
          */
-        $product = ProductsTmp::findOne($product_id);
+        $prodModel = ($store_type_id == 1) ? "ProductsTmp" : "Products";
+        $product = ("app\models\\" . $prodModel)::findOne($product_id);
         if ($product->delete()) {
             return json_encode(['error' => false, 'data' => ['id' => $product_id]]);
         }

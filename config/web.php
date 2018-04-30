@@ -18,7 +18,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\models\User',
+            'identityClass' => 'app\models\Users',
             'enableAutoLogin' => true,
         ],
         'errorHandler' => [
@@ -47,11 +47,14 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'invoice-procurement/<procurement_invoice_id:\d+>' => 'invoice-procurement/index',
-                'product/update-form/<product_id:\d+>' => 'product/update-form',
-                'product/delete/<product_id:\d+>' => 'product/delete',
+                'product/update-form/<product_id:\d+>/<store_type_id:\d+>' => 'product/update-form',
+                'product/delete/<product_id:\d+>/<store_type_id:\d+>' => 'product/delete',
             ],
         ],
 
+        'authManager' => [
+            'class' => 'yii\rbac\DbManager',
+        ],
 
     ],
     'modules' => [

@@ -39,3 +39,23 @@ tfoot {
 .nav > li.disabled {
     pointer-events: none;
 }
+
+.modal-content {
+    box-shadow: 0 0 3px 1px #767279;
+    border-radius:  3px;
+    margin:10px 10px 10px 10px;
+    background: linear-gradient(to bottom, rgb(240, 240, 240) 0%, rgb(220, 220, 220) 100%);
+}
+
+.panel1 {
+    padding:10px;
+    box-shadow: 0 0 3px 1px #767279;
+    border-radius:  3px;
+    margin:10px 10px 10px 10px;
+    background: linear-gradient(to bottom, rgb(240, 240, 240) 0%, rgb(220, 220, 220) 100%);
+}
+.panel3 {
+    box-shadow: 0 0 3px 1px #767279;
+    border-radius:  3px;
+    background: linear-gradient(to bottom, #606c88 0%,#3f4c6b 100%);
+}

@@ -39,6 +39,7 @@ class m180401_154947_products_tmp extends Migration
                 'invoice_procur_id'=> $this->integer(11)->null()->defaultValue(null),
                 'invoice_sales_id'=> $this->integer(11)->null()->defaultValue(null),
                 'invoice_transfer_id'=> $this->integer(11)->null()->defaultValue(null),
+                'user_id'=> $this->integer(11)->null()->defaultValue(null)
             ],$tableOptions
         );
         $this->createIndex('id',self::TABLE,['id'],true);
@@ -52,6 +53,7 @@ class m180401_154947_products_tmp extends Migration
         $this->createIndex('invoice_sales_id',self::TABLE,['invoice_sales_id'],false);
         $this->createIndex('invoice_transfer_id',self::TABLE,['invoice_transfer_id'],false);
         $this->createIndex('size',self::TABLE,['size'],false);
+        $this->createIndex('user_id',self::TABLE,['user_id'],false);
 
     }
 
@@ -68,6 +70,7 @@ class m180401_154947_products_tmp extends Migration
         $this->dropIndex('invoice_sales_id', self::TABLE);
         $this->dropIndex('invoice_transfer_id', self::TABLE);
         $this->dropIndex('size', self::TABLE);
+        $this->dropIndex('user_id', self::TABLE);
         $this->dropTable(self::TABLE);
     }
 

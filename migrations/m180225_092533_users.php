@@ -20,8 +20,9 @@ class m180225_092533_users extends Migration
             '{{%users}}',
             [
                 'id'=> $this->primaryKey(11),
-                'login'=> $this->string(100)->null()->defaultValue(null),
+                'username'=> $this->string(100)->null()->defaultValue(null),
                 'password'=> $this->string(100)->null()->defaultValue(null),
+                'auth_key'=> $this->string(32)->null()->defaultValue(null),
             ],$tableOptions
         );
 

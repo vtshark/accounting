@@ -109,6 +109,9 @@ class ProductsSearch extends Products
             'probe' => $this->probe,
             'category_id' => $this->category_id
         ]);
+        if (parent::hasProperty("user_id")) {
+            $query->andFilterWhere(['user_id' => Yii::$app->user->id]);
+        }
 
         $query->with(['prodName', 'manufacturer', 'store', 'category']);
 

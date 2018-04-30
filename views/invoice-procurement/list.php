@@ -59,7 +59,7 @@ use yii\helpers\Url;
             [
                 'attribute' => 'user_id',
                 'value' => function($data) {
-                    return $data->user->login;
+                    return $data->user->username;
                 },
             ],
             [

@@ -2,11 +2,9 @@
 
 namespace app\controllers;
 
-use app\models\Products;
 use app\models\ProductsSearch;
 use app\models\ProductsTmp;
 use app\models\ProductsTmpSearch;
-use app\models\Stores;
 use app\models\StoreTypes;
 use app\models\Suppliers;
 use Yii;
@@ -14,14 +12,30 @@ use app\models\InvoiceProcurement;
 use app\models\InvoiceProcurementSearch;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
-
+use yii\filters\AccessControl;
 
 class InvoiceProcurementController extends Controller
 {
-
+    /**
+     * @inheritdoc
+     */
+    public function behaviors()
+    {
+        return [
+            'access' => [
+                'class' => AccessControl::className(),
+                'rules' => [
+                    [
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ]
+        ];
+    }
     public function actionIndex($procurement_invoice_id = null) {
-        // по умолчанию используется временный филиал
-        $store_type_id = Yii::$app->request->get('store_type') ?: 1;
+        // по умолчанию используется тип "склад"
+        $store_type_id = Yii::$app->request->get('store_type') ?: 2;
         $storeType = StoreTypes::findOne($store_type_id);
 
         if ($storeType->id == 1) {
@@ -80,7 +94,7 @@ class InvoiceProcurementController extends Controller
         $invoiceProcurement = new InvoiceProcurement();
         $invoiceProcurement->load(Yii::$app->request->post());
         /** @TODO: убрать после создания авторизации */
-        $invoiceProcurement->user_id = 1;
+        $invoiceProcurement->user_id = Yii::$app->user->id;
         if ($invoiceProcurement->save()) {
             return $this->redirect(['/invoice-procurement/' . $invoiceProcurement->id]);
         } else {

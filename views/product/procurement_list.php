@@ -3,6 +3,8 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
+// по умолчанию используется тип "склад"
+$store_type_id = Yii::$app->request->get('store_type') ?: 2;
 ?>
 <? Pjax::begin(['id' => 'products_list', 'enablePushState' => false]); ?>
 <?= GridView::widget([
@@ -92,14 +94,14 @@ use yii\helpers\ArrayHelper;
         [
             'class' => \yii\grid\ActionColumn::className(),
             'buttons' => [
-                'update' => function ($url, $model) {
-                    $customUrl = Yii::$app->getUrlManager()->createUrl(['product/update-form/' . $model['id']]);
+                'update' => function ($url, $model) use($store_type_id) {
+                    $customUrl = Yii::$app->getUrlManager()->createUrl(['product/update-form/' . $model['id'] . '/' . $store_type_id]);
                     return \yii\helpers\Html::a(
                         '<span class="glyphicon glyphicon-pencil edit-product" data-href="' . $customUrl . '"></span>', "",
                         ['title' => 'Корректировать']);
                 },
-                'delete' => function ($url, $model) {
-                    $customUrl = Yii::$app->getUrlManager()->createUrl(['product/delete/' . $model['id']]);
+                'delete' => function ($url, $model) use($store_type_id) {
+                    $customUrl = Yii::$app->getUrlManager()->createUrl(['product/delete/' . $model['id'] . '/' . $store_type_id]);
                     return \yii\helpers\Html::a(
                         '<span class="glyphicon glyphicon-trash del-product" data-href="' . $customUrl . '"></span>', "",
                         ['title' => 'Удалить']);
