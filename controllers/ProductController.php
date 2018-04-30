@@ -2,9 +2,14 @@
 
 namespace app\controllers;
 
+use app\models\forms\invoice_procurement\ProductsPricingForm;
+use app\models\InvoiceProcurement;
+use Dotenv\Exception\ValidationException;
 use Yii;
 use app\models\ProductsTmp;
 use app\models\Products;
+use yii\base\InvalidArgumentException;
+use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\AccessControl;
 
@@ -110,7 +115,6 @@ class ProductController extends Controller
 
     public function actionUpdateForm($product_id, $store_type_id) {
         $prodModel = ($store_type_id == 1) ? "ProductsTmp" : "Products";
-        //echo "<pre>" . print_r( $prodModel,1) . "</pre>"; die;
         $product = ("app\models\\" . $prodModel)::findOne($product_id);
         return $this->renderAjax('create_form', [
             'product' => $product
@@ -152,6 +156,42 @@ class ProductController extends Controller
         $count = count($productsTmp);
         return json_encode(['error' => false, 'data' => ['count' => $count]]);
 
+
+    }
+
+    public function actionPricing() {
+        if (!Yii::$app->request->isPost) {
+            throw new BadRequestHttpException();
+        }
+        $post = Yii::$app->request->post();
+        $formPricing = new ProductsPricingForm();
+
+        $formPricing->load($post);
+
+        if (!$formPricing->validate()) {
+            throw new BadRequestHttpException();
+        }
+
+        $invoiceProcurement = InvoiceProcurement::findOne($formPricing->procurement_id);
+        $products = $invoiceProcurement->products;
+        if (!count($products)) {
+            Yii::$app->session->setFlash('msgError', "Изделий для наценки не найдено.");
+        } else {
+            foreach ($products as $product) {
+                switch ($formPricing->pricing_method) {
+                    case 0:
+                        $product->price_sell = round($product->price_procur * $formPricing->coefficient);
+                        $product->save();
+                        break;
+                    case 1:
+                        $product->price_sell = round($product->weight * $formPricing->coefficient);
+                        $product->save();
+                        break;
+                }
+            }
+        }
+
+        return $this->redirect(['invoice-procurement/' . $invoiceProcurement->id]);
 
     }
 }

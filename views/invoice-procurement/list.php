@@ -37,9 +37,6 @@ use yii\helpers\Url;
             [
                 'attribute' => 'id',
                 'format' => 'raw',
-                'value' => function($data) {
-                    return Html::a($data->id, Url::to('/invoice-procurement/' . $data->id));
-                },
             ],
             [
                 'attribute' => 'supplier_id',
@@ -70,6 +67,15 @@ use yii\helpers\Url;
                 },
                 'filter' => [ 0 => 'Открытые', 1 => 'Закрытые' ],
                 'headerOptions' => ['style' => 'width:100px;'],
+            ],
+            [
+                'format' => 'raw',
+                'value' => function($data) {
+                    return Html::a('<i class="fas fa-folder-open fa-lg"></i>',
+                        Url::to('/invoice-procurement/' . $data->id),
+                        ['title' => "Открыть накладную"]
+                    );
+                },
             ],
 
             //['class' => 'yii\grid\ActionColumn'],

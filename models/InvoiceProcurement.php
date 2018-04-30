@@ -80,4 +80,8 @@ class InvoiceProcurement extends \yii\db\ActiveRecord
     {
         return $this->hasOne(Users::className(), ['id' => 'user_id']);
     }
+
+    public function getProducts() {
+        return $this->hasMany(Products::className(), ['invoice_procur_id' => 'id']);
+    }
 }

@@ -20,7 +20,7 @@ Modal::end();
 echo "</div>";
 Modal::begin([
     //'size' => 'modal-sm',
-    'header' => 'Выбор накладной',
+    'header' => 'Поиск накладной',
     'id' => 'choose-id-invoice-modal',
     'toggleButton' => [
         'id' => 'choose-id-invoice-btn',
@@ -94,7 +94,7 @@ $storeTypes = \app\models\StoreTypes::getTypes(['id' => [1, 2]]);
     </li>
 
     <li role="presentation" class="<?=$disabledAddProd?>"><a href="#add-product" class="procurement-nav-a">Добавить изделие</a></li>
-    <li role="presentation" class="<?=$disabledClass?>"><a href="#price" class="procurement-nav-a">Наценка</a></li>
+    <li role="presentation" class="<?=$disabledClass?>"><a href="#margin" class="procurement-nav-a">Наценка</a></li>
     <li role="presentation" class="dropdown <?=$disabledClass?>">
         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             Печать <span class="caret"></span>
@@ -135,6 +135,12 @@ $storeTypes = \app\models\StoreTypes::getTypes(['id' => [1, 2]]);
         </div>
     </div>
 
-    <div role="tabpanel" class="tab-pane" id="price">Наценка</div>
+    <div role="tabpanel" class="tab-pane" id="margin">
+        <div class='edit-product-wrapper'>
+            <?= $this->render('/invoice-procurement/products_pricing_form', [
+                'procurement_id' => $invoiceProcurement->id
+            ]); ?>
+        </div>
+    </div>
     <div role="tabpanel" class="tab-pane" id="print">Печать</div>
 </div>
