@@ -31,4 +31,3 @@ tests/_support/_generated
 
 /runtime
 /config/db.php
-/composer.lock
