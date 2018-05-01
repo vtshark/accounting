@@ -45,11 +45,18 @@ Modal::begin([
     ],
 ]);
 Modal::end();
+$disabledClass = $disabledAddProd = '';
+
 if ($invoiceProcurement) {
     $invoiceDescription = $invoiceProcurement->id . " " .
-        $invoiceProcurement->supplier->name_short . " " .
-    $disabledClass = '';
-    $disabledAddProd = '';
+        $invoiceProcurement->supplier->name_short . " ";
+    if ($invoiceProcurement->is_closed) {
+        $invoiceDescription .= '<span class="glyphicon glyphicon-ok"></span>';
+    }
+    if ($invoiceProcurement->is_closed) {
+        $disabledClass = 'disabled';
+        $disabledAddProd = 'disabled';
+    }
 } else {
     $invoiceDescription = "";
     $disabledClass = 'disabled';
@@ -78,7 +85,7 @@ $storeTypes = \app\models\StoreTypes::getTypes(['id' => [1, 2]]);
 
     </li>
 
-    <li role="presentation">
+    <li role="presentation" class="<?=$disabledClass?>">
         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             Филиал: <?=$storeTypes[$store_type_id]['name']?><span class="caret"></span>
         </a>
@@ -95,7 +102,7 @@ $storeTypes = \app\models\StoreTypes::getTypes(['id' => [1, 2]]);
 
     <li role="presentation" class="<?=$disabledAddProd?>"><a href="#add-product" class="procurement-nav-a">Добавить изделие</a></li>
     <li role="presentation" class="<?=$disabledClass?>"><a href="#margin" class="procurement-nav-a">Наценка</a></li>
-    <li role="presentation" class="dropdown <?=$disabledClass?>">
+    <li role="presentation" class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
             Печать <span class="caret"></span>
         </a>
@@ -125,6 +132,8 @@ $storeTypes = \app\models\StoreTypes::getTypes(['id' => [1, 2]]);
 
     </li>
 
+    <li role="presentation" class="<?=$disabledClass?>"><a href="#approve-invoice" class="procurement-nav-a">Утвердить накладную</a></li>
+
 </ul>
 
 <div class="tab-content">
@@ -136,11 +145,18 @@ $storeTypes = \app\models\StoreTypes::getTypes(['id' => [1, 2]]);
     </div>
 
     <div role="tabpanel" class="tab-pane" id="margin">
+        <?= $this->render('/invoice-procurement/products_pricing_form', [
+            'procurement_id' => $invoiceProcurement->id
+        ]); ?>
+    </div>
+
+    <div role="tabpanel" class="tab-pane" id="approve-invoice">
         <div class='edit-product-wrapper'>
-            <?= $this->render('/invoice-procurement/products_pricing_form', [
+            <?= $this->render('/invoice-procurement/approve_invoice_form', [
                 'procurement_id' => $invoiceProcurement->id
             ]); ?>
         </div>
     </div>
+
     <div role="tabpanel" class="tab-pane" id="print">Печать</div>
 </div>

@@ -19,7 +19,8 @@ use Yii;
  * @property double $weight
  * @property double $size
  * @property integer $probe
- * @property integer  invoice_procur_id
+ * @property integer invoice_procur_id
+ * @property double prime_cost
  *
  * @property ProdNames $prodName
  * @property Suppliers $supplier
@@ -29,6 +30,9 @@ use Yii;
  */
 class Products extends \yii\db\ActiveRecord
 {
+    const SCENARIO_ADD_PRODUCT = 'add_product';
+    const SCENARIO_APPROVE_INVOICE = 'approve_invoice';
+
     public static function tableName()
     {
         return 'products';
@@ -41,7 +45,8 @@ class Products extends \yii\db\ActiveRecord
     {
         return [
             [['name_id', 'supplier_id', 'manufacturer_id', 'store_id', 'category_id', 'price_sell', 'invoice_procur_id', 'probe'], 'integer'],
-            [['weight', 'price_procur', 'size'], 'number'],
+            [['weight', 'price_procur', 'size'], 'double'],
+            [['prime_cost'], 'double', 'on' => self::SCENARIO_APPROVE_INVOICE],
             [['art'], 'string', 'max' => 255],
             [['name_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProdNames::className(), 'targetAttribute' => ['name_id' => 'id']],
             [['supplier_id'], 'exist', 'skipOnError' => true, 'targetClass' => Suppliers::className(), 'targetAttribute' => ['supplier_id' => 'id']],
@@ -71,6 +76,7 @@ class Products extends \yii\db\ActiveRecord
             'invoice_procur_id' => 'Накладная закупки',
             'probe' => 'Проба',
             'size' => 'Размер',
+            'prime_cost' => 'Себестоимость'
         ];
     }
 

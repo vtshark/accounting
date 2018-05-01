@@ -2,6 +2,8 @@
 
 namespace app\controllers;
 
+use app\models\forms\invoice_procurement\ApproveInvoice;
+use app\models\Products;
 use app\models\ProductsSearch;
 use app\models\ProductsTmp;
 use app\models\ProductsTmpSearch;
@@ -13,6 +15,7 @@ use app\models\InvoiceProcurementSearch;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\filters\AccessControl;
+use yii\web\BadRequestHttpException;
 
 class InvoiceProcurementController extends Controller
 {
@@ -101,6 +104,45 @@ class InvoiceProcurementController extends Controller
             Yii::$app->session->setFlash('msgError', 'Ошибка создания новой накладной!');
             return $this->redirect(['/invoice-procurement']);
         }
+    }
+
+    public function actionApprove()
+    {
+        if (!Yii::$app->request->isPost) {
+            throw new BadRequestHttpException();
+        }
+        $post = Yii::$app->request->post();
+        $formApprove = new ApproveInvoice();
+
+        $formApprove->load($post);
+
+        if (!$formApprove->validate()) {
+            throw new BadRequestHttpException();
+        }
+        $invoiceProcurement = InvoiceProcurement::findOne($formApprove->procurement_id);
+        if (!$invoiceProcurement) {
+            throw new BadRequestHttpException();
+        }
+        if ($invoiceProcurement->is_closed) {
+            Yii::$app->session->setFlash('msgError', "Накладная уже утверждена.");
+        }
+
+        $products = $invoiceProcurement->products;
+        if (!count($products)) {
+            Yii::$app->session->setFlash('msgError', "Накладная не содержит изделий.");
+        } else {
+            foreach ($products as $product) {
+                $product->prime_cost = round($product->price_procur / $formApprove->dollar_rate, 2);
+                $product->scenario = Products::SCENARIO_APPROVE_INVOICE;
+                $product->save();
+            }
+
+            $invoiceProcurement->is_closed = true;
+            $invoiceProcurement->save();
+            $invoiceProcurement->deleteTmpProducts();
+        }
+        return $this->redirect(['invoice-procurement/' . $invoiceProcurement->id]);
+
     }
 
 }

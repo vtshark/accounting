@@ -27,6 +27,7 @@ $this->params['breadcrumbs'][] = $this->title;
 
             'id',
             'description',
+            'supplier_id',
             [
                 'attribute' => 'created_at',
                 'value' => function($data) {
