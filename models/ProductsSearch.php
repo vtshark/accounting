@@ -54,7 +54,7 @@ class ProductsSearch extends Products
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
@@ -89,7 +89,7 @@ class ProductsSearch extends Products
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 
@@ -107,7 +107,9 @@ class ProductsSearch extends Products
             'art' => $this->art,
             'weight' => $this->weight,
             'probe' => $this->probe,
-            'category_id' => $this->category_id
+            'category_id' => $this->category_id,
+            'price_sell' => $this->price_sell,
+            'price_procur' => $this->price_procur,
         ]);
         if (parent::hasProperty("user_id")) {
             $query->andFilterWhere(['user_id' => Yii::$app->user->id]);
