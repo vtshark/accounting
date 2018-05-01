@@ -68,7 +68,7 @@ class ProductsSearch extends Products
             'size' => $this->size,
             'art' => $this->art,
         ]);
-        $query->with(['name', 'manufacturer', 'store']);
+        $query->with(['prodName', 'manufacturer', 'store']);
 
         return $dataProvider;
     }

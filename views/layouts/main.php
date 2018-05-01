@@ -37,13 +37,13 @@ AppAsset::register($this);
 
     $items[] = ['label' => 'Home', 'url' => ['/site/index']];
     if (!Yii::$app->user->isGuest) {
-        $items[] = ['label' => 'Приход', 'url' => ['/invoice-procurement']];
-        $items[] = ['label' => 'Админка', 'url' => ['/backend/admin-menu']];
+        $items[] = ['label' => 'Приход', 'url' => ['/invoice-procurement'], 'active' => Yii::$app->controller->id == 'invoice-procurement'];
+        $items[] = ['label' => 'Админка', 'url' => ['/backend/admin-menu'], 'active' => Yii::$app->controller->id == 'admin-menu'];
     }
     $items[] = ['label' => 'About', 'url' => ['/site/about']];
     $items[] = ['label' => 'Contact', 'url' => ['/site/contact']];
     if (Yii::$app->user->isGuest) {
-        $items[] = ['label' => 'Login', 'url' => ['/login']];
+        $items[] = ['label' => 'Login', 'url' => ['/login'], 'active' => Yii::$app->controller->id == 'login'];
     } else {
         $items[] = '<li>' . Html::beginForm(['/login/logout'], 'post')
             . Html::submitButton(

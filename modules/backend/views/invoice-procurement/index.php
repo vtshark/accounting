@@ -26,13 +26,6 @@ $this->params['breadcrumbs'][] = $this->title;
             ['class' => 'yii\grid\SerialColumn'],
 
             'id',
-            [
-                'attribute' => 'store_id',
-                'value' => function($data) {
-                    return $data->store->name;
-                },
-                'filter' => ArrayHelper::map(\app\models\Stores::find()->all(), 'id','name')
-            ],
             'description',
             [
                 'attribute' => 'created_at',
@@ -43,9 +36,9 @@ $this->params['breadcrumbs'][] = $this->title;
             [
                 'attribute' => 'user_id',
                 'value' => function($data) {
-                    return $data->user->login;
+                    return $data->user->username;
                 },
-                'filter' => ArrayHelper::map(\app\models\Users::find()->all(), 'id','login')
+                'filter' => ArrayHelper::map(\app\models\Users::find()->all(), 'id','username')
             ],
             [
                 'attribute' => 'is_closed',
