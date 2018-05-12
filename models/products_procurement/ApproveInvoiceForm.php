@@ -1,10 +1,10 @@
 <?php
 
-namespace app\models\forms\invoice_procurement;
+namespace app\models\products_procurement;
 
 use yii\base\Model;
 
-class ApproveInvoice extends Model
+class ApproveInvoiceForm extends Model
 {
     public $dollar_rate;
     public $procurement_id;

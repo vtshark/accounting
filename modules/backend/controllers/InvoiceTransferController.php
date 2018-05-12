@@ -2,18 +2,17 @@
 
 namespace app\modules\backend\controllers;
 
-use app\models\products_procurement\InvoiceProcurement;
-use app\models\products_procurement\InvoiceProcurementSearch;
 use Yii;
-
+use app\models\InvoiceTransfer;
+use app\models\InvoiceTransferSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * InvoiceProcurementController implements the CRUD actions for InvoiceProcurement model.
+ * InvoiceTransferController implements the CRUD actions for InvoiceTransfer model.
  */
-class InvoiceProcurementController extends Controller
+class InvoiceTransferController extends Controller
 {
     /**
      * @inheritdoc
@@ -31,14 +30,14 @@ class InvoiceProcurementController extends Controller
     }
 
     /**
-     * Lists all InvoiceProcurement models.
+     * Lists all InvoiceTransfer models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new InvoiceProcurementSearch();
+        $searchModel = new InvoiceTransferSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $dataProvider->pagination->pageSize = 5;
+
         return $this->render('index', [
             'searchModel' => $searchModel,
             'dataProvider' => $dataProvider,
@@ -46,10 +45,10 @@ class InvoiceProcurementController extends Controller
     }
 
     /**
-     * Displays a single InvoiceProcurement model.
+     * Displays a single InvoiceTransfer model.
      * @param integer $id
      * @return mixed
-     * @throws NotFoundHttpException
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionView($id)
     {
@@ -59,28 +58,29 @@ class InvoiceProcurementController extends Controller
     }
 
     /**
-     * Creates a new InvoiceProcurement model.
+     * Creates a new InvoiceTransfer model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new InvoiceProcurement();
+        $model = new InvoiceTransfer();
+
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('create', [
-                'model' => $model,
-            ]);
         }
+
+        return $this->render('create', [
+            'model' => $model,
+        ]);
     }
 
     /**
-     * Updates an existing InvoiceProcurement model.
+     * Updates an existing InvoiceTransfer model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
-     * @throws NotFoundHttpException
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionUpdate($id)
     {
@@ -88,18 +88,19 @@ class InvoiceProcurementController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['view', 'id' => $model->id]);
-        } else {
-            return $this->render('update', [
-                'model' => $model,
-            ]);
         }
+
+        return $this->render('update', [
+            'model' => $model,
+        ]);
     }
 
     /**
-     * Deletes an existing InvoiceProcurement model.
+     * Deletes an existing InvoiceTransfer model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
      */
     public function actionDelete($id)
     {
@@ -109,18 +110,18 @@ class InvoiceProcurementController extends Controller
     }
 
     /**
-     * Finds the InvoiceProcurement model based on its primary key value.
+     * Finds the InvoiceTransfer model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return InvoiceProcurement the loaded model
+     * @return InvoiceTransfer the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = InvoiceProcurement::findOne($id)) !== null) {
+        if (($model = InvoiceTransfer::findOne($id)) !== null) {
             return $model;
-        } else {
-            throw new NotFoundHttpException('The requested page does not exist.');
         }
+
+        throw new NotFoundHttpException('The requested page does not exist.');
     }
 }

@@ -1,8 +1,12 @@
 <?php
 
-namespace app\models;
+namespace app\models\products_procurement;
 
+use app\models\products\Products;
+use app\models\products\ProductsTmp;
 use Yii;
+use app\models\Users;
+use app\models\Suppliers;
 
 /**
  * This is the model class for table "invoice_procurement".
@@ -86,7 +90,6 @@ class InvoiceProcurement extends \yii\db\ActiveRecord
     }
 
     public function deleteTmpProducts() {
-        //$products = $this->hasMany(ProductsTmp::className(), ['invoice_procur_id' => 'id']);
         ProductsTmp::deleteAll(['invoice_procur_id' => $this->id]);
     }
 }

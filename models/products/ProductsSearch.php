@@ -1,11 +1,10 @@
 <?php
 
-namespace app\models;
+namespace app\models\products;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\Products;
 
 /**
  * ProductsSearch represents the model behind the search form about `app\models\Products`.
@@ -116,6 +115,47 @@ class ProductsSearch extends Products
         }
 
         $query->with(['prodName', 'manufacturer', 'store', 'category']);
+
+        return $dataProvider;
+    }
+
+    public function searchTransfer($params)
+    {
+        $query = Products::find();
+        if (!isset($params['sort'])) {
+            $query->orderBy(['id' => SORT_DESC]);
+        }
+        // add conditions that should always apply here
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+        ]);
+
+        $this->load($params);
+
+        if (!$this->validate() || !$params['transfer_invoice_id']) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            $query->where('0=1');
+            return $dataProvider;
+        }
+
+        // grid filtering conditions
+        $query->andWhere([
+            'invoice_transfer_id' => $params['transfer_invoice_id'],
+        ]);
+        $query->andFilterWhere([
+            'id' => $this->id,
+            'name_id' => $this->name_id,
+            'supplier_id' => $this->supplier_id,
+            'manufacturer_id' => $this->manufacturer_id,
+            'store_id' => $this->store_id,
+            'size' => $this->size,
+            'art' => $this->art,
+            'weight' => $this->weight,
+            'price_sell' => $this->price_sell,
+        ]);
+
+        $query->with(['prodName', 'manufacturer', 'store']);
 
         return $dataProvider;
     }

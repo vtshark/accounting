@@ -2,11 +2,13 @@
 
 namespace app\controllers;
 
-use app\models\forms\invoice_procurement\ProductsPricingForm;
-use app\models\InvoiceProcurement;
+use app\models\products_procurement\ProductsPricingForm;
+use app\models\products_procurement\InvoiceProcurement;
+use app\models\products_selection\ProductsList;
+use app\models\products_selection\SearchForm;
 use Yii;
-use app\models\ProductsTmp;
-use app\models\Products;
+use app\models\products\ProductsTmp;
+use app\models\products\Products;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\AccessControl;
@@ -17,6 +19,7 @@ use yii\filters\AccessControl;
  */
 class ProductController extends Controller
 {
+    CONST productNamespace = "app\models\\products\\";
     /**
      * @inheritdoc
      */
@@ -71,7 +74,7 @@ class ProductController extends Controller
             } else {
                 // processing of the single product
                 if (!$newRecord) {
-                    $product = ("app\models\\" . $productModel)::findOne($post[$productModel]['id']);
+                    $product = (self::productNamespace . $productModel)::findOne($post[$productModel]['id']);
                 } else {
                     $product = new ProductsTmp();
                 }
@@ -113,7 +116,7 @@ class ProductController extends Controller
 
     public function actionUpdateForm($product_id, $store_type_id) {
         $prodModel = ($store_type_id == 1) ? "ProductsTmp" : "Products";
-        $product = ("app\models\\" . $prodModel)::findOne($product_id);
+        $product = (self::productNamespace . $prodModel)::findOne($product_id);
         return $this->renderAjax('create_form', [
             'product' => $product
         ]);
@@ -124,7 +127,7 @@ class ProductController extends Controller
          * @todo нужны проверочки
          */
         $prodModel = ($store_type_id == 1) ? "ProductsTmp" : "Products";
-        $product = ("app\models\\" . $prodModel)::findOne($product_id);
+        $product = (self::productNamespace . $prodModel)::findOne($product_id);
         if ($product->delete()) {
             return json_encode(['error' => false, 'data' => ['id' => $product_id]]);
         }
@@ -190,6 +193,28 @@ class ProductController extends Controller
         }
 
         return $this->redirect(['invoice-procurement/' . $invoiceProcurement->id]);
+    }
+
+    /**
+     * поиск и отбор продуктов
+     */
+    public function actionSelection() {
+        $searchForm = new SearchForm();
+        if (Yii::$app->request->isPost) {
+            $post = Yii::$app->request->post();
+            $searchForm->load($post);
+            if ($searchForm->validate()) {
+                $productsList = new ProductsList();
+                $productsArr = $productsList->searchProducts($searchForm->getAttributes());
+                $productsList->update($productsArr, $searchForm->id);
+            }
+        }
+
+        return $this->render('products_selection/index',
+            [
+                'searchForm' => $searchForm
+            ]
+        );
 
     }
 }

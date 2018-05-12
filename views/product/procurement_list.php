@@ -3,6 +3,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
+use app\models\products\ProductsSearch;
 // по умолчанию используется тип "склад"
 $store_type_id = Yii::$app->request->get('store_type') ?: 2;
 ?>
@@ -52,17 +53,17 @@ $store_type_id = Yii::$app->request->get('store_type') ?: 2;
         [
             'attribute' => 'weight',
             'headerOptions' => ['style' => 'width:60px;'],
-            'footer' => \app\models\ProductsSearch::getTotal($dataProvider->models, 'weight'),
+            'footer' => ProductsSearch::getTotal($dataProvider->models, 'weight'),
         ],
         [
             'attribute' => 'price_procur',
             'headerOptions' => ['style' => 'width:80px;'],
-            'footer' => \app\models\ProductsSearch::getTotal($dataProvider->models, 'price_procur'),
+            'footer' => ProductsSearch::getTotal($dataProvider->models, 'price_procur'),
         ],
         [
             'attribute' => 'price_sell',
             'headerOptions' => ['style' => 'width:80px;'],
-            'footer' => \app\models\ProductsSearch::getTotal($dataProvider->models, 'price_sell'),
+            'footer' => ProductsSearch::getTotal($dataProvider->models, 'price_sell'),
         ],
         [
             'attribute' => 'store_id',

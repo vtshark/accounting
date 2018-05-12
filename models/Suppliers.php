@@ -43,4 +43,8 @@ class Suppliers extends \yii\db\ActiveRecord
             'name_short' => 'Name Short',
         ];
     }
+
+    public static function getAll() {
+        return self::find()->asArray()->all();
+    }
 }

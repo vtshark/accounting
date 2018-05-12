@@ -2,16 +2,16 @@
 
 namespace app\controllers;
 
-use app\models\forms\invoice_procurement\ApproveInvoice;
-use app\models\Products;
-use app\models\ProductsSearch;
-use app\models\ProductsTmp;
-use app\models\ProductsTmpSearch;
+use app\models\products_procurement\ApproveInvoiceForm;
+use app\models\products_procurement\InvoiceProcurement;
+use app\models\products\Products;
+use app\models\products\ProductsSearch;
+use app\models\products\ProductsTmp;
+use app\models\products\ProductsTmpSearch;
 use app\models\StoreTypes;
 use app\models\Suppliers;
+use app\models\products_procurement\InvoiceProcurementSearch;
 use Yii;
-use app\models\InvoiceProcurement;
-use app\models\InvoiceProcurementSearch;
 use yii\helpers\ArrayHelper;
 use yii\web\Controller;
 use yii\filters\AccessControl;
@@ -96,7 +96,6 @@ class InvoiceProcurementController extends Controller
     {
         $invoiceProcurement = new InvoiceProcurement();
         $invoiceProcurement->load(Yii::$app->request->post());
-        /** @TODO: убрать после создания авторизации */
         $invoiceProcurement->user_id = Yii::$app->user->id;
         if ($invoiceProcurement->save()) {
             return $this->redirect(['/invoice-procurement/' . $invoiceProcurement->id]);
@@ -112,7 +111,7 @@ class InvoiceProcurementController extends Controller
             throw new BadRequestHttpException();
         }
         $post = Yii::$app->request->post();
-        $formApprove = new ApproveInvoice();
+        $formApprove = new ApproveInvoiceForm();
 
         $formApprove->load($post);
 

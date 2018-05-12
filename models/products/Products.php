@@ -1,7 +1,13 @@
 <?php
 
-namespace app\models;
+namespace app\models\products;
 
+use app\models\Manufacturers;
+use app\models\ProdCategory;
+use app\models\ProdNames;
+use app\models\Stores;
+use app\models\Suppliers;
+use app\models\Probe;
 use Yii;
 
 /**

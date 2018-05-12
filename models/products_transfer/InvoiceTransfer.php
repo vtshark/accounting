@@ -1,7 +1,8 @@
 <?php
 
-namespace app\models;
-
+namespace app\models\products_transfer;
+use app\models\Stores;
+use app\models\Users;
 use Yii;
 
 /**
@@ -10,7 +11,7 @@ use Yii;
  * @property integer $id
  * @property integer $store_id
  * @property string $description
- * @property integer $create_at
+ * @property integer $created_at
  * @property integer $user_id
  * @property integer $is_closed
  *
@@ -27,13 +28,24 @@ class InvoiceTransfer extends \yii\db\ActiveRecord
         return 'invoice_transfer';
     }
 
+    public function behaviors(){
+        return [
+            [
+                'class' => \yii\behaviors\TimestampBehavior::className(),
+                'attributes' => [
+                    \yii\db\ActiveRecord::EVENT_BEFORE_INSERT => ['created_at'],
+                ],
+            ],
+        ];
+    }
+
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['store_id', 'create_at', 'user_id', 'is_closed'], 'integer'],
+            [['store_id', 'created_at', 'user_id', 'is_closed'], 'integer'],
             [['description'], 'string', 'max' => 255],
             [['store_id'], 'exist', 'skipOnError' => true, 'targetClass' => Stores::className(), 'targetAttribute' => ['store_id' => 'id']],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => Users::className(), 'targetAttribute' => ['user_id' => 'id']],
@@ -49,7 +61,7 @@ class InvoiceTransfer extends \yii\db\ActiveRecord
             'id' => 'ID',
             'store_id' => 'Store ID',
             'description' => 'Description',
-            'create_at' => 'Create At',
+            'created_at' => 'Create At',
             'user_id' => 'User ID',
             'is_closed' => 'Is Closed',
         ];
@@ -58,7 +70,7 @@ class InvoiceTransfer extends \yii\db\ActiveRecord
     /**
      * @return \yii\db\ActiveQuery
      */
-    public function getStores()
+    public function getStore()
     {
         return $this->hasOne(Stores::className(), ['id' => 'store_id']);
     }

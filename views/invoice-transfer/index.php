@@ -10,12 +10,12 @@ use yii\web\View;
     </div>
 <?php } ?>
 
-<?= $this->render('_head', ['invoiceProcurement' => $invoiceProcurement, 'product' => $product]); ?>
+<?= $this->render('_head', ['invoiceTransfer' => $invoiceTransfer/*, 'product' => $product*/]); ?>
 
 
-<?= $this->render('/product/procurement_list', [
-    'searchModel' => $searchModel,
-    'dataProvider' => $dataProvider,
+<?= $this->render('/product/transfer_list', [
+        'searchModel' => $searchModel,
+        'dataProvider' => $dataProvider,
     ]
 );
 ?>

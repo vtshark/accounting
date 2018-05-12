@@ -5,13 +5,13 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 use yii\helpers\Url;
 /* @var $this yii\web\View */
-/* @var $searchModel app\models\products_procurement\InvoiceProcurementSearch */
+/* @var $searchModel app\models\InvoiceProcurementSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 //$this->title = 'Invoice Procurements';
 //$this->params['breadcrumbs'][] = $this->title;
 ?>
-<div class="invoice-procurement-index">
+<div class="invoice-transfer-index">
 
     <h1><?= Html::encode($this->title) ?></h1>
     <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
@@ -19,7 +19,7 @@ use yii\helpers\Url;
     <!--<p>
         <?/*= Html::a('Create Invoice Procurement', ['create'], ['class' => 'btn btn-success']) */?>
     </p>-->
-    <?php Pjax::begin(['id' => 'invoice-procur-list', 'enablePushState' => false]); ?>
+    <?php Pjax::begin(['id' => 'invoice-transfer-list', 'enablePushState' => false]); ?>
 
 
 
@@ -39,9 +39,9 @@ use yii\helpers\Url;
                 'format' => 'raw',
             ],
             [
-                'attribute' => 'supplier_id',
+                'attribute' => 'store_id',
                 'value' => function($data) {
-                    return $data->supplier->name_short;
+                    return $data->store->name;
                 },
             ],
             [
@@ -72,7 +72,7 @@ use yii\helpers\Url;
                 'format' => 'raw',
                 'value' => function($data) {
                     return Html::a('<i class="fas fa-folder-open fa-lg"></i>',
-                        Url::to('/invoice-procurement/' . $data->id),
+                        Url::to('/invoice-transfer/' . $data->id),
                         ['title' => "Открыть накладную"]
                     );
                 },

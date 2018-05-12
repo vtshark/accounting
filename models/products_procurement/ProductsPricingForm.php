@@ -1,5 +1,5 @@
 <?php
-namespace app\models\forms\invoice_procurement;
+namespace app\models\products_procurement;
 
 use Yii;
 use yii\base\Model;

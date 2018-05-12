@@ -1,6 +1,6 @@
 <?php
 
-namespace app\models;
+namespace app\models\products;
 
 /**
  * This is the model class for table "products_tmp".

@@ -2,6 +2,7 @@
 
 namespace app\models;
 
+use app\products_procurement\models\InvoiceProcurement;
 use Yii;
 use yii\web\IdentityInterface;
 use yii\base\NotSupportedException;

@@ -47,6 +47,7 @@ $config = [
             'showScriptName' => false,
             'rules' => [
                 'invoice-procurement/<procurement_invoice_id:\d+>' => 'invoice-procurement/index',
+                'invoice-transfer/<transfer_invoice_id:\d+>' => 'invoice-transfer/index',
                 'product/update-form/<product_id:\d+>/<store_type_id:\d+>' => 'product/update-form',
                 'product/delete/<product_id:\d+>/<store_type_id:\d+>' => 'product/delete',
             ],

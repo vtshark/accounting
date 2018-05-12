@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 
 /* @var $this yii\web\View */
-/* @var $model app\models\InvoiceProcurement */
+/* @var $model \app\models\products_procurement\InvoiceProcurement */
 
 $this->title = 'Create Invoice Procurement';
 $this->params['breadcrumbs'][] = ['label' => 'Invoice Procurements', 'url' => ['index']];

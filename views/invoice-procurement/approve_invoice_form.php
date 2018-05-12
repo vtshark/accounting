@@ -2,7 +2,7 @@
 use yii\bootstrap\ActiveForm;
 use yii\helpers\Html;
 
-$model = new \app\models\forms\invoice_procurement\ApproveInvoice();
+$model = new \app\models\products_procurement\ApproveInvoiceForm();
 
 $model->procurement_id = $procurement_id;
 $form = ActiveForm::begin([

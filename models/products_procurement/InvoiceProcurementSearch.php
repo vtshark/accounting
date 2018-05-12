@@ -1,11 +1,10 @@
 <?php
 
-namespace app\models;
+namespace app\models\products_procurement;
 
 use Yii;
 use yii\base\Model;
 use yii\data\ActiveDataProvider;
-use app\models\InvoiceProcurement;
 
 /**
  * InvoiceProcurementSearch represents the model behind the search form about `app\models\InvoiceProcurement`.
@@ -55,7 +54,7 @@ class InvoiceProcurementSearch extends InvoiceProcurement
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
-            // $query->where('0=1');
+            $query->where('0=1');
             return $dataProvider;
         }
 

@@ -38,6 +38,7 @@ AppAsset::register($this);
     $items[] = ['label' => 'Home', 'url' => ['/site/index']];
     if (!Yii::$app->user->isGuest) {
         $items[] = ['label' => 'Приход', 'url' => ['/invoice-procurement'], 'active' => Yii::$app->controller->id == 'invoice-procurement'];
+        $items[] = ['label' => 'Выдача', 'url' => ['/invoice-transfer'], 'active' => Yii::$app->controller->id == 'invoice-transfer'];
         $items[] = ['label' => 'Админка', 'url' => ['/backend/admin-menu'], 'active' => Yii::$app->controller->id == 'admin-menu'];
     }
     $items[] = ['label' => 'About', 'url' => ['/site/about']];
