@@ -36,8 +36,8 @@ class InvoiceTransferController extends Controller
         } else {
             $invoiceTransfer = null;
         }
-        $searchModel = new ProductsSearch();
-        $dataProvider = $searchModel->searchTransfer(Yii::$app->request->queryParams);
+        $products = new ProductsSearch();
+        $dataProvider = $products->searchTransfer(Yii::$app->request->queryParams);
 
         return $this->render('index',
             [

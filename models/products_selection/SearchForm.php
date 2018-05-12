@@ -17,6 +17,7 @@ class SearchForm extends \yii\base\Model
     {
         return [
             [['store_id'], 'required'],
+            [['store_id'], 'validateCountAttr'],
             [['id', 'store_id', 'name_id', 'category_id', 'supplier_id'], 'integer'],
             [['art'], 'string', 'max' => 255],
             [['weight', 'price_sell', 'size'], 'double'],
@@ -38,6 +39,16 @@ class SearchForm extends \yii\base\Model
             'price_sell' => 'Цена продажи',
             'size' => 'Размер',
         ];
+    }
+
+    public function validateCountAttr($attribute)
+    {
+        $attributes = $this->getAttributes();
+        unset($attributes['store_id']);
+        $attributes = array_filter($attributes);
+        if (!count($attributes)) {
+            $this->addError($attribute, 'Не достаточно параметров для поиска!');
+        }
     }
 
 }

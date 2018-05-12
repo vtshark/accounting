@@ -200,11 +200,12 @@ class ProductController extends Controller
      */
     public function actionSelection() {
         $searchForm = new SearchForm();
+        $productsList = new ProductsList();
+
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
             $searchForm->load($post);
             if ($searchForm->validate()) {
-                $productsList = new ProductsList();
                 $productsArr = $productsList->searchProducts($searchForm->getAttributes());
                 $productsList->update($productsArr, $searchForm->id);
             }
@@ -212,7 +213,8 @@ class ProductController extends Controller
 
         return $this->render('products_selection/index',
             [
-                'searchForm' => $searchForm
+                'searchForm' => $searchForm,
+                'products' => $productsList->get()
             ]
         );
 
