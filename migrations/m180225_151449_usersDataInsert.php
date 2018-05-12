@@ -12,6 +12,10 @@ class m180225_151449_usersDataInsert extends Migration
         parent::init();
     }
 
+    /**
+     * @return bool|void
+     * @throws \yii\base\Exception
+     */
     public function safeUp()
     {
         $this->batchInsert('{{%users}}',
@@ -20,7 +24,7 @@ class m180225_151449_usersDataInsert extends Migration
     [
         'id' => '1',
         'username' => 'admin',
-        'password' => '123',
+        'password' => Yii::$app->security->generatePasswordHash("123"),
     ],
 ]
         );
