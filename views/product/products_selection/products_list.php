@@ -1,61 +1,55 @@
-<?
-/**
- * @var $productsList \app\models\products_selection\ProductsList
- */
-$products = $productsList->get();
-$attributes = $productsList->getAttributes();
-//echo "<pre>" . print_r($attributes ,1) . "</pre>"; die;
-?>
-    <table id="table" class="cell-border table-hover" style="width:100%">
-        <thead>
-        <tr>
-            <? if (isset($attributes['info']['#'])) { ?>
-                <th>#</th>
-            <? } ?>
-            <? if (isset($attributes['info']['check'])) { ?>
-                <th></th>
-            <? } ?>
+<table id="table-products-selection" class="cell-border table-hover" style="width:100%">
+    <thead>
+    <tr>
+        <? if (isset($attributeLabels['info']['#'])) { ?>
+            <th>#</th>
+        <? } ?>
+        <? if (isset($attributeLabels['info']['check'])) { ?>
+            <th></th>
+        <? } ?>
 
-            <? foreach ($attributes['data'] as $label) { ?>
-                <th><?=$label?></th>
-            <? } ?>
-        </tr>
-        </thead>
-        <tbody>
-        <?
-        if (!empty($products)) {
-            foreach ($products as $product) { ?>
-                <tr>
-                    <? if (isset($attributes['info']['#'])) { ?>
-                        <th></th>
-                    <? } ?>
+        <? foreach ($attributeLabels['data'] as $label) { ?>
+            <th><?=$label?></th>
+        <? } ?>
+    </tr>
+    </thead>
+    <tbody>
+    <?
+    if (!empty($products)) {
+        foreach ($products as $product) { ?>
+            <tr>
+                <? if (isset($attributeLabels['info']['#'])) { ?>
+                    <th></th>
+                <? } ?>
 
-                    <? if (isset($attributes['info']['check'])) { ?>
-                        <th>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default btn-checkbox">
-                                <input type="checkbox" autocomplete="off">
-                                <span class="glyphicon glyphicon-ok"></span>
-                            </label>
-                            </div>
-                        </th>
-                    <? } ?>
+                <? if (isset($attributeLabels['info']['check'])) {
+                    $check = (isset($product['check'])) ? 'active' : '';
+                    ?>
+                    <th>
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default btn-checkbox <?=$check?>" data-id="<?=$product['id']?>">
+                            <input type="checkbox" autocomplete="off">
+                            <span class="glyphicon glyphicon-ok"></span>
+                        </label>
+                        </div>
+                    </th>
+                <? } ?>
 
-                    <? foreach ($attributes['data'] as $attribute => $label) { ?>
-                        <td><?= $product[$attribute] ?? '' ?></td>
-                    <? } ?>
+                <? foreach ($attributeLabels['data'] as $attribute => $label) { ?>
+                    <td><?= $product[$attribute] ?? '' ?></td>
+                <? } ?>
 
-                </tr>
-            <? }
-        }
-        ?>
-        </tbody>
-    </table>
+            </tr>
+        <? }
+    }
+    ?>
+    </tbody>
+</table>
 
 <?
 $script = <<<JS
     $(document).ready(function() {
-        var t = $('#table').DataTable({
+        var t = $('#table-products-selection').DataTable({
             scrollY:        '65vh',
             scrollCollapse: true,
             paging:         false,

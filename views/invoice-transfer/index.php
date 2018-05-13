@@ -10,7 +10,7 @@ use yii\web\View;
     </div>
 <?php } ?>
 
-<?= $this->render('_head', ['invoiceTransfer' => $invoiceTransfer/*, 'product' => $product*/]); ?>
+<?= $this->render('_head', ['invoiceTransfer' => $invoiceTransfer]); ?>
 
 
 <?= $this->render('/product/transfer_list', [

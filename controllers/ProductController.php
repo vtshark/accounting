@@ -201,24 +201,48 @@ class ProductController extends Controller
     public function actionSelection() {
         $searchForm = new SearchForm();
         $productsList = new ProductsList();
-        $productsList->setAttributes(['id', 'name_id', 'supplier_id', 'art', 'size', 'weight', 'price_sell', 'store_id']);
-
+        $attributeLabels = $productsList->getAttributeLabels();
+        $products = [];
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
             $searchForm->load($post);
             if ($searchForm->validate()) {
-                $productsArr = $productsList->searchProducts($searchForm->getAttributes());
-                $productsList->update($productsArr, $searchForm->id);
+                $productsFound = $productsList->searchProducts($searchForm->getAttributes());
+                $products = $productsList->mergeWithProductsFound($productsFound);
+                //$productsList->addProduct();
+            } else {
+                $products = $productsList->get();
             }
         }
 
+//        $attributeArray = [];
+//        if (!$attributeArray) {
+//            foreach ($products[0] as $k => $v) {
+//                $attributeArray[] = $k;
+//            }
+//        }
+//        $productsList->setAttributes($attributeArray);
 
         return $this->render('products_selection/index',
             [
                 'searchForm' => $searchForm,
-                'productsList' => $productsList
+                'attributeLabels' => $attributeLabels,
+                'products' => $products,
             ]
         );
 
     }
+
+    public function actionSelect() {
+        if (!Yii::$app->request->isAjax || !Yii::$app->request->isPost) {
+            return json_encode(['error' => true]);
+        }
+        $post = Yii::$app->request->post();
+        $productsList = new ProductsList();
+
+        ($post['checked'] == "true") ? $productsList->addProduct($post['id']) : $productsList->delProduct($post['id']);
+
+        return json_encode(['error' => false]);
+    }
+
 }
