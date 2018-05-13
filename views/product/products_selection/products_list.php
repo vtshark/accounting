@@ -1,5 +1,7 @@
 <?
-//echo "<pre>" . print_r($products,1) . "</pre>"; die;
+/**
+ * @var $productsList \app\models\products_selection\ProductsList
+ */
 $products = $productsList->get();
 $attributes = $productsList->getAttributes();
 //echo "<pre>" . print_r($attributes ,1) . "</pre>"; die;
@@ -31,7 +33,7 @@ $attributes = $productsList->getAttributes();
                     <? if (isset($attributes['info']['check'])) { ?>
                         <th>
                             <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default">
+                                <label class="btn btn-default btn-checkbox">
                                 <input type="checkbox" autocomplete="off">
                                 <span class="glyphicon glyphicon-ok"></span>
                             </label>

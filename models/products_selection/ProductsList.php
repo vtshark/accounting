@@ -4,7 +4,6 @@ namespace app\models\products_selection;
 
 use Yii;
 use app\models\products\Products;
-use yii\web\Session;
 
 
 class ProductsList

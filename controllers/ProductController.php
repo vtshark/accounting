@@ -201,12 +201,12 @@ class ProductController extends Controller
     public function actionSelection() {
         $searchForm = new SearchForm();
         $productsList = new ProductsList();
+        $productsList->setAttributes(['id', 'name_id', 'supplier_id', 'art', 'size', 'weight', 'price_sell', 'store_id']);
 
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
             $searchForm->load($post);
             if ($searchForm->validate()) {
-                $productsList->setAttributes(['id', 'name_id', 'supplier_id', 'art', 'size', 'weight', 'price_sell', 'store_id']);
                 $productsArr = $productsList->searchProducts($searchForm->getAttributes());
                 $productsList->update($productsArr, $searchForm->id);
             }

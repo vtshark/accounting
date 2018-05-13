@@ -66,9 +66,15 @@ tfoot {
     border-radius:  3px;
     background: linear-gradient(to bottom, #606c88 0%,#3f4c6b 100%);
 }
-.btn span.glyphicon {
+
+.btn-checkbox span.glyphicon {
     opacity: 0;
 }
-.btn.active span.glyphicon {
+
+.btn-checkbox.active span.glyphicon {
     opacity: 1;
+}
+
+.btn-checkbox {
+    padding: 1px 5px;
 }
