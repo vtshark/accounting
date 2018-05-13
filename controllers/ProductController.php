@@ -206,15 +206,17 @@ class ProductController extends Controller
             $post = Yii::$app->request->post();
             $searchForm->load($post);
             if ($searchForm->validate()) {
+                $productsList->setAttributes(['id', 'name_id', 'supplier_id', 'art', 'size', 'weight', 'price_sell', 'store_id']);
                 $productsArr = $productsList->searchProducts($searchForm->getAttributes());
                 $productsList->update($productsArr, $searchForm->id);
             }
         }
 
+
         return $this->render('products_selection/index',
             [
                 'searchForm' => $searchForm,
-                'products' => $productsList->get()
+                'productsList' => $productsList
             ]
         );
 

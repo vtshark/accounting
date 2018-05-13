@@ -17,6 +17,9 @@ table tbody td {
 .table-bordered tbody tr:hover {
     background: #ddd;
 }
+.table-hover tbody tr:hover {
+    background: #ddd;
+}
 
 tfoot {
     font-weight: bold;
@@ -62,4 +65,10 @@ tfoot {
     box-shadow: 0 0 3px 1px #767279;
     border-radius:  3px;
     background: linear-gradient(to bottom, #606c88 0%,#3f4c6b 100%);
+}
+.btn span.glyphicon {
+    opacity: 0;
+}
+.btn.active span.glyphicon {
+    opacity: 1;
 }

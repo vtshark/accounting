@@ -9,6 +9,8 @@ use yii\web\Session;
 
 class ProductsList
 {
+    public $attributeNames = [];
+
     public function update(array $productsArr, $product_id = null) {
         $session = Yii::$app->session;
         if (!$session->isActive) {
@@ -46,6 +48,18 @@ class ProductsList
             $session->open();
         }
         return $session->get('productsSelection');
+    }
+
+    public function setAttributes($attributes) {
+        $product = new Products();
+        foreach ($attributes as $attribute) {
+            $this->attributeNames['data'][$attribute] = $product->getAttributeLabel($attribute);
+        }
+        $this->attributeNames['info'] = ['#' => 0, 'check' => 0];
+    }
+
+    public function getAttributes() {
+        return $this->attributeNames;
     }
 
 }
