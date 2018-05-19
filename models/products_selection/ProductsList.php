@@ -8,19 +8,28 @@ use app\models\products\Products;
 
 class ProductsList
 {
+    CONST SEPARATOR = "_";
     public $attributeLabels = [];
     private $attributes = [
             'id', 'name_id', 'supplier_id', 'art', 'size', 'weight', 'price_sell', 'store_id'
         ];
     private $session;
+    private $session_key;
+    public $selection_mode, $invoice_id;
 
-    public function __construct()
+    public function __construct($selection_mode, $invoice_id)
     {
+        $this->selection_mode = $selection_mode;
+        $this->invoice_id = $invoice_id;
+
         $this->setAttributeLabels($this->attributes);
         $this->session = Yii::$app->session;
         if (!$this->session->isActive) {
             $this->session->open();
         }
+        $this->session_key = "productsSelection" . self::SEPARATOR .
+            $this->selection_mode . self::SEPARATOR .
+            $this->invoice_id;
     }
 
     public function mergeWithProductsFound(array $productsFound) {
@@ -30,7 +39,7 @@ class ProductsList
             $products[] = $this->productDataToArr($product);
         }
 
-        $productsSelection = $this->session->get('productsSelection', null);
+        $productsSelection = $this->get();
 
         if (!empty($productsSelection)) {
             $products = array_merge($productsSelection, $products);
@@ -40,15 +49,22 @@ class ProductsList
     }
 
     public function get() {
-        return $this->session->get('productsSelection', null);
+        $productsSelection = $this->session->get($this->session_key, null);
+        $productsSelection = ($productsSelection) ?? [];
+        return $productsSelection;
     }
 
-    public function searchProducts(array $searchParams)
+    public function set($productsSelection) {
+        $this->session->set($this->session_key, $productsSelection);
+    }
+
+    public function searchProductsForTransfer(array $searchParams, $store_id)
     {
         $skipIds = $this->getSelectedIds();
         $searchParams = array_diff($searchParams, array(''));
         $productsArr = Products::find()->where($searchParams)
             ->andFilterWhere(['not in', 'id', $skipIds])
+            ->andWhere(['<>', 'store_id', $store_id])
             ->with(['prodName', 'store', 'manufacturer', 'supplier'])
             ->all();
         return $productsArr;
@@ -80,8 +96,7 @@ class ProductsList
     }
 
     public function getSelectedIds() {
-        $arr = $this->session->get('productsSelection', null);
-        if (!$arr) return null;
+        $arr = $this->get();
         $out = [];
         foreach ($arr as $item) {
             $out[] = $item['id'];
@@ -94,20 +109,25 @@ class ProductsList
         if ($product) {
             $productArr = $this->productDataToArr($product);
             $productArr['check'] = true;
-            $productsSelection = $this->session->get('productsSelection', null);
+            $productsSelection = $this->get();
+
             $productsSelection[] = $productArr;
-            $this->session->set('productsSelection', $productsSelection);
+            $this->set($productsSelection);
         }
     }
 
     public function delProduct($id) {
         if ($id) {
-            $productsSelection = $this->session->get('productsSelection', null);
+            $productsSelection = $this->get();
             foreach ($productsSelection as $k => $product) {
                 if ($product['id'] == $id) unset($productsSelection[$k]);
             }
-            $this->session->set('productsSelection', $productsSelection);
+            $this->set($productsSelection);
         }
+    }
+
+    public function clear() {
+        $this->session->remove($this->session_key);
     }
 
 }

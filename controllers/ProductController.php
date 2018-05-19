@@ -6,6 +6,7 @@ use app\models\products_procurement\ProductsPricingForm;
 use app\models\products_procurement\InvoiceProcurement;
 use app\models\products_selection\ProductsList;
 use app\models\products_selection\SearchForm;
+use app\models\products_transfer\InvoiceTransfer;
 use Yii;
 use app\models\products\ProductsTmp;
 use app\models\products\Products;
@@ -197,17 +198,21 @@ class ProductController extends Controller
 
     /**
      * поиск и отбор продуктов
+     * @param $selection_mode
+     * @param $invoice_id
+     * @return string
      */
-    public function actionSelection() {
+    public function actionSelection($selection_mode, $invoice_id) {
         $searchForm = new SearchForm();
-        $productsList = new ProductsList();
+        $productsList = new ProductsList($selection_mode, $invoice_id);
+        $invoiceTransfer = InvoiceTransfer::findOne($invoice_id);
         $attributeLabels = $productsList->getAttributeLabels();
         $products = [];
         if (Yii::$app->request->isPost) {
             $post = Yii::$app->request->post();
             $searchForm->load($post);
             if ($searchForm->validate()) {
-                $productsFound = $productsList->searchProducts($searchForm->getAttributes());
+                $productsFound = $productsList->searchProductsForTransfer($searchForm->getAttributes(), $invoiceTransfer->store_id);
                 $products = $productsList->mergeWithProductsFound($productsFound);
                 //$productsList->addProduct();
             } else {
@@ -228,6 +233,7 @@ class ProductController extends Controller
                 'searchForm' => $searchForm,
                 'attributeLabels' => $attributeLabels,
                 'products' => $products,
+                'invoiceTransfer' => $invoiceTransfer
             ]
         );
 
@@ -238,11 +244,42 @@ class ProductController extends Controller
             return json_encode(['error' => true]);
         }
         $post = Yii::$app->request->post();
-        $productsList = new ProductsList();
+
+        $selection_mode = ($post['selection_mode']) ?? null;
+        $invoice_id = ($post['invoice_id']) ?? null;
+        $productsList = new ProductsList($selection_mode, $invoice_id);
 
         ($post['checked'] == "true") ? $productsList->addProduct($post['id']) : $productsList->delProduct($post['id']);
 
         return json_encode(['error' => false]);
+    }
+
+    public function actionConfirmSelection($selection_mode, $invoice_id) {
+
+        $productsList = new ProductsList($selection_mode, $invoice_id);
+        $invoiceTransfer = InvoiceTransfer::findOne($invoice_id);
+        $list = $productsList->get();
+        //echo "<pre>" . print_r($products_arr ,1) . "</pre>"; die;
+        foreach ($list as $item) {
+            $product = Products::find()->where(['id' => $item['id']])->limit(1)->one();
+            $product->setAttribute('invoice_transfer_id', $invoiceTransfer->id);
+            $product->setAttribute('store_id', $invoiceTransfer->store_id);
+            if (!$product->save()) {
+                die("error");
+            }
+        }
+        $productsList->clear();
+        return $this->redirect(['invoice-transfer/' . $invoice_id]);
+        //die;
+    }
+
+    public function actionDebug() {
+//        $session = Yii::$app->session;
+//        if (!$session->isActive) {
+//            $session->open();
+//        }
+//        $session->remove("productsSelection");
+        echo "<pre>" . print_r($_SESSION ,1) . "</pre>"; die;
     }
 
 }

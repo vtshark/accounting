@@ -26,6 +26,8 @@ use Yii;
  * @property double $size
  * @property integer $probe
  * @property integer invoice_procur_id
+ * @property integer invoice_transfer_id
+ * @property integer invoice_sales_id
  * @property double prime_cost
  *
  * @property ProdNames $prodName
@@ -50,7 +52,9 @@ class Products extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name_id', 'supplier_id', 'manufacturer_id', 'store_id', 'category_id', 'price_sell', 'invoice_procur_id', 'probe'], 'integer'],
+            [['name_id', 'supplier_id', 'manufacturer_id', 'store_id', 'category_id', 'price_sell',
+                'invoice_procur_id', 'invoice_transfer_id', 'invoice_sales_id','probe'],
+                'integer'],
             [['weight', 'price_procur', 'size'], 'double'],
             [['prime_cost'], 'double', 'on' => self::SCENARIO_APPROVE_INVOICE],
             [['art'], 'string', 'max' => 255],

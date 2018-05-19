@@ -8,9 +8,10 @@ use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
 
-$this->title = 'Отбор изделий';
-$this->params['breadcrumbs'][] = $this->title;
-
+//$this->title = 'Отбор изделий';
+//$this->params['breadcrumbs'][] = $this->title;
+$stores_arr = ArrayHelper::map(\app\models\Stores::getAll(), 'id', 'name');
+unset($stores_arr[$invoiceTransfer->store_id]);
 ?>
 
     <?php $form = ActiveForm::begin([
@@ -18,9 +19,7 @@ $this->params['breadcrumbs'][] = $this->title;
         'options' => ['class' => 'panel1'],
     ]); ?>
 
-    <?= $form->field($searchForm, 'store_id')->dropDownList(
-        ArrayHelper::map(\app\models\Stores::getAll(), 'id', 'name'),
-        ['prompt' => '']);?>
+    <?= $form->field($searchForm, 'store_id')->dropDownList($stores_arr, ['prompt' => '']);?>
 
     <?= $form->field($searchForm, 'id')->textInput() ?>
 

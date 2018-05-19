@@ -1,3 +1,7 @@
+<?
+$selection_mode = Yii::$app->request->getQueryParam('selection_mode');
+$invoice_id = Yii::$app->request->getQueryParam('invoice_id');
+?>
 <table id="table-products-selection" class="cell-border table-hover" style="width:100%">
     <thead>
     <tr>
@@ -27,7 +31,11 @@
                     ?>
                     <th>
                         <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default btn-checkbox <?=$check?>" data-id="<?=$product['id']?>">
+                            <label class="btn btn-default btn-checkbox <?=$check?>"
+                                   data-id="<?=$product['id']?>"
+                                   data-selection_mode="<?=$selection_mode?>"
+                                   data-invoice_id="<?=$invoice_id?>"
+                            >
                             <input type="checkbox" autocomplete="off">
                             <span class="glyphicon glyphicon-ok"></span>
                         </label>
@@ -46,6 +54,25 @@
     </tbody>
 </table>
 
+<button class="btn btn-primary">
+    <span class="glyphicon glyphicon-check lg" aria-hidden="true"></span>
+</button>
+<button class="btn btn-primary">
+    <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
+</button>
+<span class="pull-right">
+<a href="<?=\yii\helpers\Url::to(['invoice-transfer/' . $invoice_id])?>"
+   class="btn btn-primary">
+    <span class="glyphicon glyphicon-new-window" aria-hidden="true"></span>
+    Вернуться к накладной
+</a>
+
+<a href="<?=\yii\helpers\Url::to(['product/confirm-selection/' . $selection_mode . '-' . $invoice_id])?>"
+   class="btn btn-success">
+    <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+    Завершить отбор
+</a>
+</span>
 <?
 $script = <<<JS
     $(document).ready(function() {

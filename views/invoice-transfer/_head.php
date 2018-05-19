@@ -64,8 +64,11 @@ if ($invoiceTransfer) {
 
     </li>
 
-    <a  href="<?= Url::toRoute(['product/selection']) ?>" class="btn btn-default <?=$disabledClass?>" >
-        Отбор изделий
-    </a>
+    <li role="presentation" class="<?=$disabledClass?>">
+        <a href="<?= Url::toRoute(['product/selection/transfer_products-' . $invoiceTransfer->id]) ?>">
+            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+            Поиск изделий
+        </a>
+    </li>
 
 </ul>

@@ -50,6 +50,8 @@ $config = [
                 'invoice-transfer/<transfer_invoice_id:\d+>' => 'invoice-transfer/index',
                 'product/update-form/<product_id:\d+>/<store_type_id:\d+>' => 'product/update-form',
                 'product/delete/<product_id:\d+>/<store_type_id:\d+>' => 'product/delete',
+                'product/selection/<selection_mode:\w+>-<invoice_id:\d+>' => 'product/selection',
+                'product/confirm-selection/<selection_mode:\w+>-<invoice_id:\d+>' => 'product/confirm-selection',
             ],
         ],
 
