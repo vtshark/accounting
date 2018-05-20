@@ -17,6 +17,7 @@ unset($stores_arr[$invoiceTransfer->store_id]);
     <?php $form = ActiveForm::begin([
         'id' => 'select-products-form',
         'options' => ['class' => 'panel1'],
+    'method' => 'get'
     ]); ?>
 
     <?= $form->field($searchForm, 'store_id')->dropDownList($stores_arr, ['prompt' => '']);?>

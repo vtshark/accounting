@@ -207,26 +207,15 @@ class ProductController extends Controller
         $productsList = new ProductsList($selection_mode, $invoice_id);
         $invoiceTransfer = InvoiceTransfer::findOne($invoice_id);
         $attributeLabels = $productsList->getAttributeLabels();
-        $products = [];
-        if (Yii::$app->request->isPost) {
-            $post = Yii::$app->request->post();
-            $searchForm->load($post);
+
+        $get = Yii::$app->request->get();
+        $searchForm->load($get);
             if ($searchForm->validate()) {
                 $productsFound = $productsList->searchProductsForTransfer($searchForm->getAttributes(), $invoiceTransfer->store_id);
                 $products = $productsList->mergeWithProductsFound($productsFound);
-                //$productsList->addProduct();
             } else {
                 $products = $productsList->get();
             }
-        }
-
-//        $attributeArray = [];
-//        if (!$attributeArray) {
-//            foreach ($products[0] as $k => $v) {
-//                $attributeArray[] = $k;
-//            }
-//        }
-//        $productsList->setAttributes($attributeArray);
 
         return $this->render('products_selection/index',
             [
@@ -238,6 +227,37 @@ class ProductController extends Controller
         );
 
     }
+
+    public function actionClearSelect()
+    {
+        if (!Yii::$app->request->isAjax || !Yii::$app->request->isPost) {
+            return json_encode(['error' => true]);
+        }
+        $post = Yii::$app->request->post();
+        $selection_mode = ($post['selection_mode']) ?? null;
+        $invoice_id = ($post['invoice_id']) ?? null;
+        $productsList = new ProductsList($selection_mode, $invoice_id);
+        $productsList->clear();
+
+        return json_encode(['error' => false, 'data' => []]);
+    }
+
+
+    public function actionMultiSelect()
+    {
+        if (!Yii::$app->request->isAjax || !Yii::$app->request->isPost) {
+            return json_encode(['error' => true]);
+        }
+        $post = Yii::$app->request->post();
+        $selection_mode = ($post['selection_mode']) ?? null;
+        $invoice_id = ($post['invoice_id']) ?? null;
+        $productsList = new ProductsList($selection_mode, $invoice_id);
+        $productsList->addProducts($post['ids']);
+
+        return json_encode(['error' => false, 'data' => []]);
+    }
+
+
 
     public function actionSelect() {
         if (!Yii::$app->request->isAjax || !Yii::$app->request->isPost) {
@@ -259,7 +279,6 @@ class ProductController extends Controller
         $productsList = new ProductsList($selection_mode, $invoice_id);
         $invoiceTransfer = InvoiceTransfer::findOne($invoice_id);
         $list = $productsList->get();
-        //echo "<pre>" . print_r($products_arr ,1) . "</pre>"; die;
         foreach ($list as $item) {
             $product = Products::find()->where(['id' => $item['id']])->limit(1)->one();
             $product->setAttribute('invoice_transfer_id', $invoiceTransfer->id);
@@ -270,7 +289,6 @@ class ProductController extends Controller
         }
         $productsList->clear();
         return $this->redirect(['invoice-transfer/' . $invoice_id]);
-        //die;
     }
 
     public function actionDebug() {
@@ -278,7 +296,7 @@ class ProductController extends Controller
 //        if (!$session->isActive) {
 //            $session->open();
 //        }
-//        $session->remove("productsSelection");
+//        $session->remove("productsSelection_transfer_products_1");
         echo "<pre>" . print_r($_SESSION ,1) . "</pre>"; die;
     }
 

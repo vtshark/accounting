@@ -2,6 +2,10 @@
 $selection_mode = Yii::$app->request->getQueryParam('selection_mode');
 $invoice_id = Yii::$app->request->getQueryParam('invoice_id');
 ?>
+
+    <input id="selection-mode" type="hidden" value="<?= $selection_mode ?>">
+    <input id="invoice-id" type="hidden" hidden value="<?= $invoice_id ?>">
+
 <table id="table-products-selection" class="cell-border table-hover" style="width:100%">
     <thead>
     <tr>
@@ -33,8 +37,6 @@ $invoice_id = Yii::$app->request->getQueryParam('invoice_id');
                         <div class="btn-group" data-toggle="buttons">
                             <label class="btn btn-default btn-checkbox <?=$check?>"
                                    data-id="<?=$product['id']?>"
-                                   data-selection_mode="<?=$selection_mode?>"
-                                   data-invoice_id="<?=$invoice_id?>"
                             >
                             <input type="checkbox" autocomplete="off">
                             <span class="glyphicon glyphicon-ok"></span>
@@ -54,10 +56,10 @@ $invoice_id = Yii::$app->request->getQueryParam('invoice_id');
     </tbody>
 </table>
 
-<button class="btn btn-primary">
+    <button id="select-all-btn" class="btn btn-primary">
     <span class="glyphicon glyphicon-check lg" aria-hidden="true"></span>
 </button>
-<button class="btn btn-primary">
+    <button id="cancel-all-btn" class="btn btn-primary">
     <span class="glyphicon glyphicon-unchecked" aria-hidden="true"></span>
 </button>
 <span class="pull-right">

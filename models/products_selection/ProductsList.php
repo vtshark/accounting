@@ -32,7 +32,8 @@ class ProductsList
             $this->invoice_id;
     }
 
-    public function mergeWithProductsFound(array $productsFound) {
+    public function mergeWithProductsFound(array $productsFound)
+    {
 
         $products = [];
         foreach ($productsFound as $product) {
@@ -48,13 +49,15 @@ class ProductsList
         return $products;
     }
 
-    public function get() {
+    public function get()
+    {
         $productsSelection = $this->session->get($this->session_key, null);
         $productsSelection = ($productsSelection) ?? [];
         return $productsSelection;
     }
 
-    public function set($productsSelection) {
+    public function set($productsSelection)
+    {
         $this->session->set($this->session_key, $productsSelection);
     }
 
@@ -70,7 +73,8 @@ class ProductsList
         return $productsArr;
     }
 
-    public function setAttributeLabels($attributes) {
+    public function setAttributeLabels($attributes)
+    {
         $product = new Products();
         foreach ($attributes as $attribute) {
             $this->attributeLabels['data'][$attribute] = $product->getAttributeLabel($attribute);
@@ -78,11 +82,13 @@ class ProductsList
         $this->attributeLabels['info'] = ['#' => 0, 'check' => 0];
     }
 
-    public function getAttributeLabels() {
+    public function getAttributeLabels()
+    {
         return $this->attributeLabels;
     }
 
-    public function productDataToArr($product) {
+    public function productDataToArr($product)
+    {
         return  [
             'id' => $product->id,
             'name_id' => $product->prodName->name,
@@ -95,7 +101,8 @@ class ProductsList
         ];
     }
 
-    public function getSelectedIds() {
+    public function getSelectedIds()
+    {
         $arr = $this->get();
         $out = [];
         foreach ($arr as $item) {
@@ -104,7 +111,8 @@ class ProductsList
         return $out;
     }
 
-    public function addProduct($id) {
+    public function addProduct($id)
+    {
         $product = Products::findOne($id);
         if ($product) {
             $productArr = $this->productDataToArr($product);
@@ -116,7 +124,25 @@ class ProductsList
         }
     }
 
-    public function delProduct($id) {
+    public function addProducts(array $ids)
+    {
+        $products = Products::find()->where(['in', 'id', $ids])
+            ->with(['prodName', 'supplier', 'store'])
+            ->all();
+        $newProducts = [];
+        foreach ($products as $product) {
+            $pr = $this->productDataToArr($product);
+            $pr['check'] = true;
+            $newProducts[] = $pr;
+        }
+        $productsSelection = $this->get();
+        $products = array_merge($productsSelection, $newProducts);
+        $this->set($products);
+
+    }
+
+    public function delProduct($id)
+    {
         if ($id) {
             $productsSelection = $this->get();
             foreach ($productsSelection as $k => $product) {
@@ -126,7 +152,8 @@ class ProductsList
         }
     }
 
-    public function clear() {
+    public function clear()
+    {
         $this->session->remove($this->session_key);
     }
 
