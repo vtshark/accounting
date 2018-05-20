@@ -38,10 +38,10 @@ class InvoiceProcurementController extends Controller
     }
     public function actionIndex($procurement_invoice_id = null) {
         // по умолчанию используется тип "склад"
-        $store_type_id = Yii::$app->request->get('store_type') ?: 2;
+        $store_type_id = Yii::$app->request->get('store_type') ?: StoreTypes::DEFAULT_TYPE_ID;
         $storeType = StoreTypes::findOne($store_type_id);
 
-        if ($storeType->id == 1) {
+        if ($storeType->id == StoreTypes::TMP_TYPE_ID) {
             $searchModel = new ProductsTmpSearch();
         } else {
             $searchModel = new ProductsSearch();

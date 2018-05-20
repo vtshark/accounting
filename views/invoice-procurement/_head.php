@@ -2,6 +2,7 @@
 use yii\bootstrap\Modal;
 use yii\helpers\Url;
 use yii\helpers\Html;
+use app\models\StoreTypes;
 
 echo "<div class='edit-product-wrapper'>";
 Modal::begin([
@@ -63,12 +64,12 @@ if ($invoiceProcurement) {
     $disabledAddProd = 'disabled';
 }
 // по умолчанию используется тип "склад"
-$store_type_id = Yii::$app->request->get('store_type') ?: 2;
-if ($store_type_id <> 1) {
+$store_type_id = Yii::$app->request->get('store_type') ?: StoreTypes::DEFAULT_TYPE_ID;
+if ($store_type_id <> StoreTypes::TMP_TYPE_ID) {
     $disabledAddProd = 'disabled';
 }
-$stores = \app\models\Stores::getStores(['store_type_id' => [1, 2]]);
-$storeTypes = \app\models\StoreTypes::getTypes(['id' => [1, 2]]);
+$stores = \app\models\Stores::getStores(['store_type_id' => [StoreTypes::TMP_TYPE_ID, StoreTypes::DEFAULT_TYPE_ID]]);
+$storeTypes = StoreTypes::getTypes(['id' => [StoreTypes::TMP_TYPE_ID, StoreTypes::DEFAULT_TYPE_ID]]);
 ?>
 
 <input id="invoice-id" type="hidden" value="<?= $invoiceProcurement->id ?>">

@@ -13,6 +13,7 @@ use app\models\products\Products;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
 use yii\filters\AccessControl;
+use app\models\StoreTypes;
 
 /**
  * Class ProductController
@@ -116,7 +117,7 @@ class ProductController extends Controller
     }
 
     public function actionUpdateForm($product_id, $store_type_id) {
-        $prodModel = ($store_type_id == 1) ? "ProductsTmp" : "Products";
+        $prodModel = ($store_type_id == StoreTypes::TMP_TYPE_ID) ? "ProductsTmp" : "Products";
         $product = (self::productNamespace . $prodModel)::findOne($product_id);
         return $this->renderAjax('create_form', [
             'product' => $product
@@ -127,7 +128,7 @@ class ProductController extends Controller
         /**
          * @todo нужны проверочки
          */
-        $prodModel = ($store_type_id == 1) ? "ProductsTmp" : "Products";
+        $prodModel = ($store_type_id == StoreTypes::TMP_TYPE_ID) ? "ProductsTmp" : "Products";
         $product = (self::productNamespace . $prodModel)::findOne($product_id);
         if ($product->delete()) {
             return json_encode(['error' => false, 'data' => ['id' => $product_id]]);
@@ -175,7 +176,12 @@ class ProductController extends Controller
         }
 
         $invoiceProcurement = InvoiceProcurement::findOne($formPricing->procurement_id);
-        $products = $invoiceProcurement->products;
+        if ($formPricing->store_type == StoreTypes::TMP_TYPE_ID) {
+            $products = $invoiceProcurement->tmpProducts;
+        } else {
+            $products = $invoiceProcurement->products;
+        }
+
         if (!count($products)) {
             Yii::$app->session->setFlash('msgError', "Изделий для наценки не найдено.");
         } else {
@@ -193,7 +199,7 @@ class ProductController extends Controller
             }
         }
 
-        return $this->redirect(['invoice-procurement/' . $invoiceProcurement->id]);
+        return $this->redirect(['invoice-procurement/' . $invoiceProcurement->id, 'store_type' => $formPricing->store_type]);
     }
 
     /**

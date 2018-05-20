@@ -21,31 +21,31 @@ class m180225_151411_storesDataInsert extends Migration
                     'id' => '1',
                     'name' => 'Временный',
                     'status' => '1',
-                    'store_type_id' => '1',
+                    'store_type_id' => \app\models\StoreTypes::TMP_TYPE_ID,
                 ],
                 [
                     'id' => '2',
                     'name' => 'Склад-Киев',
                     'status' => '1',
-                    'store_type_id' => '2',
+                    'store_type_id' => \app\models\StoreTypes::DEFAULT_TYPE_ID,
                 ],
                 [
                     'id' => '3',
                     'name' => 'Склад-Донецк',
                     'status' => '1',
-                    'store_type_id' => '2',
+                    'store_type_id' => \app\models\StoreTypes::DEFAULT_TYPE_ID,
                 ],
                 [
                     'id' => '4',
                     'name' => 'Ашан',
                     'status' => '1',
-                    'store_type_id' => '3',
+                    'store_type_id' => \app\models\StoreTypes::STORE_TYPE_ID,
                 ],
                 [
                     'id' => '5',
                     'name' => 'Марио',
                     'status' => '1',
-                    'store_type_id' => '3',
+                    'store_type_id' => \app\models\StoreTypes::STORE_TYPE_ID,
                 ],
             ]
         );

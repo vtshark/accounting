@@ -89,6 +89,10 @@ class InvoiceProcurement extends \yii\db\ActiveRecord
         return $this->hasMany(Products::className(), ['invoice_procur_id' => 'id']);
     }
 
+    public function getTmpProducts() {
+        return $this->hasMany(ProductsTmp::className(), ['invoice_procur_id' => 'id']);
+    }
+
     public function deleteTmpProducts() {
         ProductsTmp::deleteAll(['invoice_procur_id' => $this->id]);
     }

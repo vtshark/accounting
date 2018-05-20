@@ -10,6 +10,7 @@ use yii\filters\AccessControl;
 use yii\helpers\ArrayHelper;
 use app\models\Stores;
 use app\models\products\ProductsSearch;
+use app\models\StoreTypes;
 
 class InvoiceTransferController extends Controller
 {
@@ -61,7 +62,7 @@ class InvoiceTransferController extends Controller
     public function actionCreateForm()
     {
         $invoiceTransfer = new InvoiceTransfer();
-        $storesArray = ArrayHelper::map(Stores::find()->where(['store_type_id' => 3])->all(), 'id', 'name');
+        $storesArray = ArrayHelper::map(Stores::find()->where(['store_type_id' => StoreTypes::STORE_TYPE_ID])->all(), 'id', 'name');
         return $this->renderAjax('create_form', [
             'invoiceTransfer' => $invoiceTransfer,
             'storesArray' => $storesArray

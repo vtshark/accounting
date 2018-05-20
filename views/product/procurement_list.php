@@ -5,7 +5,7 @@ use yii\helpers\Html;
 use yii\helpers\ArrayHelper;
 use app\models\products\ProductsSearch;
 // по умолчанию используется тип "склад"
-$store_type_id = Yii::$app->request->get('store_type') ?: 2;
+$store_type_id = Yii::$app->request->get('store_type') ?: \app\models\StoreTypes::DEFAULT_TYPE_ID;
 ?>
 <? Pjax::begin(['id' => 'products_list', 'enablePushState' => false]); ?>
 <?= GridView::widget([

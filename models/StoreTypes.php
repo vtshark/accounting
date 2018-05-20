@@ -14,6 +14,9 @@ use Yii;
  */
 class StoreTypes extends \yii\db\ActiveRecord
 {
+    CONST TMP_TYPE_ID = 1;
+    CONST DEFAULT_TYPE_ID = 2;
+    CONST STORE_TYPE_ID = 3;
     /**
      * @inheritdoc
      */

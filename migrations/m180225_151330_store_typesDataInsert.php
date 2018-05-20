@@ -18,15 +18,15 @@ class m180225_151330_store_typesDataInsert extends Migration
                            ["id", "name"],
                             [
     [
-        'id' => '1',
+        'id' => \app\models\StoreTypes::TMP_TYPE_ID,
         'name' => 'Временный',
     ],
     [
-        'id' => '2',
+        'id' => \app\models\StoreTypes::DEFAULT_TYPE_ID,
         'name' => 'Склад',
     ],
     [
-        'id' => '3',
+        'id' => \app\models\StoreTypes::STORE_TYPE_ID,
         'name' => 'Магазин',
     ],
 ]

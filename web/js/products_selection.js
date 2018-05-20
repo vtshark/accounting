@@ -15,15 +15,14 @@ $(document).ready(function () {
             dataType: 'json',
             success: function (json) {
                 if (json.error) {
-                    (!checked) ? obj.addClass("active") : obj.removeClass("active");
+                    obj.toggleClass("active");
                 } else {
 
                 }
             },
             error: function (json) {
                 console.log('Error!');
-                //$(this).addClass(activeClass);
-                (!checked) ? obj.addClass("active") : obj.removeClass("active");
+                obj.toggleClass("active");
             }
         });
     });
