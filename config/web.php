@@ -65,6 +65,10 @@ $config = [
             'class' => 'app\modules\backend\Backend',
         ],
     ],
+    'aliases' => [
+        '@bower' => '@vendor/bower-asset',
+        '@npm'   => '@vendor/npm-asset',
+    ],
     'params' => $params,
 ];
 
