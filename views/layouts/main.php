@@ -26,48 +26,59 @@ AppAsset::register($this);
 <?php $this->beginBody() ?>
 
 <div class="wrap">
-    <?php
-    NavBar::begin([
-        'brandLabel' =>  '<i class="far fa-gem fa-lg"></i>',
-        'brandUrl' => Yii::$app->homeUrl,
-        'options' => [
-            'class' => 'navbar-inverse navbar-fixed-top panel3',
-        ],
-    ]);
+<!--    --><?php
+//    NavBar::begin([
+//        'brandLabel' =>  '<i class="far fa-gem fa-lg"></i>',
+//        'brandUrl' => Yii::$app->homeUrl,
+//        'options' => [
+//            'class' => 'navbar-inverse navbar-fixed-top panel3',
+//        ],
+//    ]);
+//
+//    $items[] = ['label' => 'Home', 'url' => ['/site/index']];
+//    if (!Yii::$app->user->isGuest) {
+//        $items[] = ['label' => 'Приход', 'url' => ['/invoice-procurement'], 'active' => Yii::$app->controller->id == 'invoice-procurement'];
+//        $items[] = ['label' => 'Выдача', 'url' => ['/invoice-transfer'], 'active' => Yii::$app->controller->id == 'invoice-transfer'];
+//        $items[] = ['label' => 'Изделия', 'url' => ['/products'], 'active' => Yii::$app->controller->id == 'products'];
+//        $items[] = ['label' => 'Админка', 'url' => ['/backend/admin-menu'], 'active' => Yii::$app->controller->id == 'admin-menu'];
+//    }
+//    $items[] = ['label' => 'About', 'url' => ['/site/about']];
+//    $items[] = ['label' => 'Contact', 'url' => ['/site/contact']];
+//    if (Yii::$app->user->isGuest) {
+//        $items[] = ['label' => 'Login', 'url' => ['/login'], 'active' => Yii::$app->controller->id == 'login'];
+//    } else {
+//        $items[] = '<li>' . Html::beginForm(['/login/logout'], 'post')
+//            . Html::submitButton(
+//            'Logout (' . Yii::$app->user->identity->username . ')',
+//                ['class' => 'btn btn-link logout']
+//            )
+//        . Html::endForm()
+//        . '</li>';
+//    }
+//
+//
+//    echo Nav::widget([
+//        'options' => ['class' => 'navbar-nav navbar-left'],
+//        'items' => $items,
+//    ]);
+//    NavBar::end();
+//    ?>
 
-    $items[] = ['label' => 'Home', 'url' => ['/site/index']];
-    if (!Yii::$app->user->isGuest) {
-        $items[] = ['label' => 'Приход', 'url' => ['/invoice-procurement'], 'active' => Yii::$app->controller->id == 'invoice-procurement'];
-        $items[] = ['label' => 'Выдача', 'url' => ['/invoice-transfer'], 'active' => Yii::$app->controller->id == 'invoice-transfer'];
-        $items[] = ['label' => 'Админка', 'url' => ['/backend/admin-menu'], 'active' => Yii::$app->controller->id == 'admin-menu'];
-    }
-    $items[] = ['label' => 'About', 'url' => ['/site/about']];
-    $items[] = ['label' => 'Contact', 'url' => ['/site/contact']];
-    if (Yii::$app->user->isGuest) {
-        $items[] = ['label' => 'Login', 'url' => ['/login'], 'active' => Yii::$app->controller->id == 'login'];
-    } else {
-        $items[] = '<li>' . Html::beginForm(['/login/logout'], 'post')
-            . Html::submitButton(
-            'Logout (' . Yii::$app->user->identity->username . ')',
-                ['class' => 'btn btn-link logout']
-            )
-        . Html::endForm()
-        . '</li>';
-    }
-
-
-    echo Nav::widget([
-        'options' => ['class' => 'navbar-nav navbar-right'],
-        'items' => $items,
-    ]);
-    NavBar::end();
-    ?>
-
-    <div class="container">
+    <div class="container-fluid">
+        <span class="inline-block">
         <?= Breadcrumbs::widget([
             'links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [],
         ]) ?>
+        </span>
+        <span class="pull-right">
+        <?
+        if (!Yii::$app->user->isGuest) {
+            echo $this->render("/layouts/sidebar");
+        }
+        ?>
+        </span>
     </div>
+
     <div class="container-fluid">
         <?= $content ?>
     </div>

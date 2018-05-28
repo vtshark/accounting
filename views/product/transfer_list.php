@@ -11,7 +11,7 @@ use app\models\products\ProductsSearch;
 <?= GridView::widget([
     'tableOptions' => [
         'id' => 'products_table',
-        'class' => 'table table-bordered',
+        'class' => 'table table-bordered table-striped',
     ],
     'rowOptions' => ['class' => 'table-row'],
     'dataProvider' => $dataProvider,

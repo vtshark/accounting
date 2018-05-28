@@ -3,6 +3,9 @@ use yii\bootstrap\Modal;
 use yii\helpers\Url;
 use yii\helpers\Html;
 
+$this->title = 'Выдачи';
+$this->params['breadcrumbs'][] = $this->title;
+
 Modal::begin([
     //'size' => 'modal-sm',
     'header' => 'Поиск накладной',

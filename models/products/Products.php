@@ -2,9 +2,12 @@
 
 namespace app\models\products;
 
+use app\models\InvoiceSales;
 use app\models\Manufacturers;
 use app\models\ProdCategory;
 use app\models\ProdNames;
+use app\models\products_procurement\InvoiceProcurement;
+use app\models\products_transfer\InvoiceTransfer;
 use app\models\Stores;
 use app\models\Suppliers;
 use app\models\Probe;
@@ -86,7 +89,10 @@ class Products extends \yii\db\ActiveRecord
             'invoice_procur_id' => 'Накладная закупки',
             'probe' => 'Проба',
             'size' => 'Размер',
-            'prime_cost' => 'Себестоимость'
+            'prime_cost' => 'Себестоимость',
+            'date_transfer_invoice' => 'Дата выдачи',
+            'date_procur_invoice' => 'Дата закупки',
+            'date_sales_invoice' => 'Дата продажи'
         ];
     }
 
@@ -125,5 +131,24 @@ class Products extends \yii\db\ActiveRecord
     public function getCategory()
     {
         return $this->hasOne(ProdCategory::className(), ['id' => 'category_id']);
+    }
+
+    /**
+     *
+     */
+    public function getTransferInvoice() {
+        return $this->hasOne(InvoiceTransfer::className(), ['id' => 'invoice_transfer_id']);
+    }
+    /**
+     *
+     */
+    public function getProcurementInvoice() {
+        return $this->hasOne(InvoiceProcurement::className(), ['id' => 'invoice_procur_id']);
+    }
+    /**
+     *
+     */
+    public function getSalesInvoice() {
+        return $this->hasOne(InvoiceSales::className(), ['id' => 'invoice_sales_id']);
     }
 }

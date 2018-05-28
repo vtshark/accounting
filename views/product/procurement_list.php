@@ -11,7 +11,7 @@ $store_type_id = Yii::$app->request->get('store_type') ?: \app\models\StoreTypes
 <?= GridView::widget([
     'tableOptions' => [
         'id' => 'products_table',
-        'class' => 'table table-bordered',
+        'class' => 'table table-bordered table-striped',
     ],
     'rowOptions' => ['class' => 'table-row'],
     'dataProvider' => $dataProvider,

@@ -2,29 +2,31 @@
 $(document).ready(function () {
     $("#table-products-selection .btn-checkbox").click(function(e) {
         var obj = $(this),
-            checked = !obj.hasClass("active"),
-            id = obj.data("id"),
+            checkbox = $(this).find("input"),
+            checked = checkbox.val(),
+            id = checkbox.attr('id'),
             selection_mode = $("#selection-mode").val(),
             invoice_id = $("#invoice-id").val();
 
+            $.ajax({
+                url: "/product/select",
+                data: {id: id, checked: checked, selection_mode: selection_mode, invoice_id: invoice_id},
+                type: 'POST',
+                dataType: 'json',
+                success: function (json) {
+                    if (json.error) {
+                        checkbox.val(!checked);
+                        obj.find('.glyphicon-ok').remove();
+                    } else {
 
-        $.ajax({
-            url: "/product/select",
-            data: {id: id, checked: checked, selection_mode: selection_mode, invoice_id: invoice_id},
-            type: 'POST',
-            dataType: 'json',
-            success: function (json) {
-                if (json.error) {
-                    obj.toggleClass("active");
-                } else {
-
+                    }
+                },
+                error: function (json) {
+                    console.log('Error!');
+                    checkbox.val(!checked);
+                    obj.find('.glyphicon-ok').remove();
                 }
-            },
-            error: function (json) {
-                console.log('Error!');
-                obj.toggleClass("active");
-            }
-        });
+            });
     });
 
     $("#select-all-btn").click(function (e) {
@@ -36,12 +38,16 @@ $(document).ready(function () {
 
         rows.each(function () {
             var cell_checkbox = $(this).children()[1];
-            var checkBox = $(cell_checkbox).find("label.btn-checkbox");
-            if (!checkBox.hasClass("active")) {
+            var checkBox = $(cell_checkbox).find("input");
+            if (parseInt(checkBox.val()) === 0) {
                 var cell = $(this).children()[2];
                 ids.push(cell.innerText);
             }
         });
+
+        if (ids.length === 0) {
+            return false;
+        }
 
         $.ajax({
             url: "/product/multi-select",
@@ -52,15 +58,14 @@ $(document).ready(function () {
                 if (json.error) {
 
                 } else {
-
                     rows.each(function () {
                         var cell_checkbox = $(this).children()[1];
-                        var checkBox = $(cell_checkbox).find("label.btn-checkbox");
-                        if (!checkBox.hasClass("active")) {
-                            checkBox.addClass("active");
+                        var checkBox = $(cell_checkbox).find("input");
+                        if (parseInt(checkBox.val()) === 0) {
+                            $(cell_checkbox).find(".cbx-icon").append('<i class="glyphicon glyphicon-ok"></i>');
+                            checkBox.val(1);
                         }
                     });
-
                 }
             },
             error: function (json) {
@@ -73,7 +78,20 @@ $(document).ready(function () {
         var table = $("#table-products-selection tbody"),
             rows = table.find("tr"),
             selection_mode = $("#selection-mode").val(),
-            invoice_id = $("#invoice-id").val();
+            invoice_id = $("#invoice-id").val(),
+            ids = [];
+
+        rows.each(function () {
+            var cell_checkbox = $(this).children()[1];
+            var checkBox = $(cell_checkbox).find("input");
+            if (parseInt(checkBox.val()) === 1) {
+                var cell = $(this).children()[2];
+                ids.push(cell.innerText);
+            }
+        });
+        if (ids.length === 0) {
+            return false;
+        }
 
         $.ajax({
             url: "/product/clear-select",
@@ -86,9 +104,10 @@ $(document).ready(function () {
                 } else {
                     rows.each(function () {
                         var cell_checkbox = $(this).children()[1];
-                        var checkBox = $(cell_checkbox).find("label.btn-checkbox");
-                        if (checkBox.hasClass("active")) {
-                            checkBox.removeClass("active");
+                        var checkBox = $(cell_checkbox).find("input");
+                        if (parseInt(checkBox.val()) === 1) {
+                            $(cell_checkbox).find('.glyphicon-ok').remove();
+                            checkBox.val(0);
                         }
                     });
                 }

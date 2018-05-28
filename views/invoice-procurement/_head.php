@@ -4,6 +4,9 @@ use yii\helpers\Url;
 use yii\helpers\Html;
 use app\models\StoreTypes;
 
+$this->title = 'Закупки';
+$this->params['breadcrumbs'][] = $this->title;
+
 echo "<div class='edit-product-wrapper'>";
 Modal::begin([
     'size' => 'modal-lg',

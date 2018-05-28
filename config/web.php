@@ -20,7 +20,15 @@ $config = [
         'user' => [
             'identityClass' => 'app\models\Users',
             'enableAutoLogin' => true,
+            'loginUrl' => ['login']
         ],
+//        'formatter' => [
+//            'dateFormat' => 'dd.MM.yyyy',
+//            'dateTimeFormat' => 'dd.MM.yyyy',
+//            'decimalSeparator' => ',',
+//            'thousandSeparator' => ' ',
+//            'currencyCode' => 'EUR',
+//        ],
         'errorHandler' => [
             'errorAction' => 'site/error',
         ],

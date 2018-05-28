@@ -255,6 +255,9 @@ class ProductController extends Controller
             return json_encode(['error' => true]);
         }
         $post = Yii::$app->request->post();
+        if (empty($post['ids'])) {
+            return json_encode(['error' => false, 'data' => []]);
+        }
         $selection_mode = ($post['selection_mode']) ?? null;
         $invoice_id = ($post['invoice_id']) ?? null;
         $productsList = new ProductsList($selection_mode, $invoice_id);
@@ -275,7 +278,7 @@ class ProductController extends Controller
         $invoice_id = ($post['invoice_id']) ?? null;
         $productsList = new ProductsList($selection_mode, $invoice_id);
 
-        ($post['checked'] == "true") ? $productsList->addProduct($post['id']) : $productsList->delProduct($post['id']);
+        ($post['checked'] == "1") ? $productsList->addProduct($post['id']) : $productsList->delProduct($post['id']);
 
         return json_encode(['error' => false]);
     }

@@ -11,13 +11,16 @@ use yii\data\ActiveDataProvider;
  */
 class ProductsSearch extends Products
 {
+    public $date_transfer_invoice, $date_procur_invoice, $date_sales_invoice;
     /**
      * @inheritdoc
      */
     public function rules()
     {
         return [
-            [['id', 'name_id', 'supplier_id', 'manufacturer_id', 'store_id', 'price_sell', 'probe', 'category_id'], 'integer'],
+            [['id', 'name_id', 'supplier_id', 'manufacturer_id', 'store_id', 'price_sell', 'probe', 'category_id',
+            'date_transfer_invoice', 'date_procur_invoice', 'date_sales_invoice'
+            ], 'integer'],
             [['weight', 'size', 'price_procur'], 'double'],
             [['art'], 'string'],
         ];
@@ -41,13 +44,29 @@ class ProductsSearch extends Products
      */
     public function search($params)
     {
+        //echo "<pre>" . print_r( $params,1) . "</pre>"; die;
         $query = Products::find();
-
+        $query->joinWith(['transferInvoice', 'procurementInvoice', 'salesInvoice']);
         // add conditions that should always apply here
 
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'sort'=> ['defaultOrder' => ['id' => SORT_DESC]]
         ]);
+        $dataProvider->sort->attributes['date_transfer_invoice'] = [
+            'asc' => ['invoice_transfer.created_at' => SORT_ASC],
+            'desc' => ['invoice_transfer.created_at' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['date_procur_invoice'] = [
+            'asc' => ['invoice_procurement.created_at' => SORT_ASC],
+            'desc' => ['invoice_procurement.created_at' => SORT_DESC],
+        ];
+
+        $dataProvider->sort->attributes['date_sales_invoice'] = [
+            'asc' => ['invoice_sales.created_at' => SORT_ASC],
+            'desc' => ['invoice_sales.created_at' => SORT_DESC],
+        ];
 
         $this->load($params);
 
@@ -59,16 +78,16 @@ class ProductsSearch extends Products
 
         // grid filtering conditions
         $query->andFilterWhere([
-            'id' => $this->id,
-            'name_id' => $this->name_id,
-            'supplier_id' => $this->supplier_id,
-            'manufacturer_id' => $this->manufacturer_id,
-            'store_id' => $this->store_id,
-            'size' => $this->size,
-            'art' => $this->art,
+            'products.id' => $this->id,
+            'products.name_id' => $this->name_id,
+            'products.supplier_id' => $this->supplier_id,
+            'products.manufacturer_id' => $this->manufacturer_id,
+            'products.store_id' => $this->store_id,
+            'products.size' => $this->size,
+            'products.art' => $this->art,
+            'products.price_sell' => $this->price_sell,
         ]);
-        $query->with(['prodName', 'manufacturer', 'store']);
-
+        $query->with(['prodName', 'supplier', 'manufacturer', 'store', 'category']);
         return $dataProvider;
     }
 

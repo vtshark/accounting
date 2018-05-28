@@ -1,4 +1,5 @@
 <?
+use kartik\checkbox\CheckboxX;
 $selection_mode = Yii::$app->request->getQueryParam('selection_mode');
 $invoice_id = Yii::$app->request->getQueryParam('invoice_id');
 ?>
@@ -31,16 +32,16 @@ $invoice_id = Yii::$app->request->getQueryParam('invoice_id');
                 <? } ?>
 
                 <? if (isset($attributeLabels['info']['check'])) {
-                    $check = (isset($product['check'])) ? 'active' : '';
+                    $check = isset($product['check']) ? 1 : 0;
                     ?>
                     <th>
-                        <div class="btn-group" data-toggle="buttons">
-                            <label class="btn btn-default btn-checkbox <?=$check?>"
-                                   data-id="<?=$product['id']?>"
-                            >
-                            <input type="checkbox" autocomplete="off">
-                            <span class="glyphicon glyphicon-ok"></span>
-                        </label>
+                        <div class="btn-checkbox">
+                        <?= CheckboxX::widget([
+                            'name' => 'ch_' . $product['id'],
+                            'options' => [ 'id' => $product['id'] ],
+                            'pluginOptions' => ['threeState' => false],
+                            'value' => $check
+                        ]); ?>
                         </div>
                     </th>
                 <? } ?>

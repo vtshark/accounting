@@ -27,7 +27,7 @@ use yii\helpers\Url;
         'dataProvider' => $dataProvider,
         'filterModel' => $searchModel,
         'tableOptions' => [
-            'class' => 'table table-bordered'
+            'class' => 'table table-bordered table-striped'
         ],
         'rowOptions' => ['class' => 'table-row'],
 
