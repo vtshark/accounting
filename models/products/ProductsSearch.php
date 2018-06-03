@@ -12,6 +12,9 @@ use yii\data\ActiveDataProvider;
 class ProductsSearch extends Products
 {
     public $date_transfer_invoice, $date_procur_invoice, $date_sales_invoice;
+    public $date_transfer_d1, $date_transfer_d2;
+    public $date_procur_d1, $date_procur_d2;
+    public $date_sales_d1, $date_sales_d2;
     /**
      * @inheritdoc
      */
@@ -21,6 +24,13 @@ class ProductsSearch extends Products
             [['id', 'name_id', 'supplier_id', 'manufacturer_id', 'store_id', 'price_sell', 'probe', 'category_id',
             'date_transfer_invoice', 'date_procur_invoice', 'date_sales_invoice'
             ], 'integer'],
+            [
+                ['date_transfer_d1', 'date_transfer_d2',
+                    'date_procur_d1', 'date_procur_d2',
+                    'date_sales_d1', 'date_sales_d2',
+                ],
+                'string'
+            ],
             [['weight', 'size', 'price_procur'], 'double'],
             [['art'], 'string'],
         ];
@@ -44,7 +54,7 @@ class ProductsSearch extends Products
      */
     public function search($params)
     {
-        //echo "<pre>" . print_r( $params,1) . "</pre>"; die;
+        //echo "<pre>" . print_r( $this,1) . "</pre>"; die;
         $query = Products::find();
         $query->joinWith(['transferInvoice', 'procurementInvoice', 'salesInvoice']);
         // add conditions that should always apply here
@@ -68,7 +78,7 @@ class ProductsSearch extends Products
             'desc' => ['invoice_sales.created_at' => SORT_DESC],
         ];
 
-        $this->load($params);
+        //$this->load($params);
 
         if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
@@ -84,9 +94,42 @@ class ProductsSearch extends Products
             'products.manufacturer_id' => $this->manufacturer_id,
             'products.store_id' => $this->store_id,
             'products.size' => $this->size,
+            'products.weight' => $this->weight,
             'products.art' => $this->art,
             'products.price_sell' => $this->price_sell,
+            'products.category_id' => $this->category_id,
         ]);
+
+        if ($this->date_transfer_d1 && $this->date_transfer_d2) {
+            $d1 = strtotime($this->date_transfer_d1);
+            $d2 = strtotime($this->date_transfer_d2);
+            if ($d1 == $d2) {
+                $d2 = strtotime($this->date_transfer_d1 . "+1 day");
+            }
+            $query->andFilterWhere(['>=', 'invoice_transfer.created_at', $d1])
+                ->andFilterWhere(['<=', 'invoice_transfer.created_at', $d2]);
+        }
+
+        if ($this->date_procur_d1 && $this->date_procur_d2) {
+            $d1 = strtotime($this->date_procur_d1);
+            $d2 = strtotime($this->date_procur_d2);
+            if ($d1 == $d2) {
+                $d2 = strtotime($this->date_procur_d1 . "+1 day");
+            }
+            $query->andFilterWhere(['>=', 'invoice_procurement.created_at', $d1])
+                ->andFilterWhere(['<=', 'invoice_procurement.created_at', $d2]);
+        }
+
+        if ($this->date_sales_d1 && $this->date_sales_d2) {
+            $d1 = strtotime($this->date_sales_d1);
+            $d2 = strtotime($this->date_sales_d2);
+            if ($d1 == $d2) {
+                $d2 = strtotime($this->date_sales_d1 . "+1 day");
+            }
+            $query->andFilterWhere(['>=', 'invoice_sales.created_at', $d1])
+                ->andFilterWhere(['<=', 'invoice_sales.created_at', $d2]);
+        }
+
         $query->with(['prodName', 'supplier', 'manufacturer', 'store', 'category']);
         return $dataProvider;
     }

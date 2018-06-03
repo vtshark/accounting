@@ -21,7 +21,7 @@ use app\models\StoreTypes;
  */
 class ProductController extends Controller
 {
-    CONST productNamespace = "app\models\\products\\";
+    CONST productNamespace = "app\\models\\products\\";
     /**
      * @inheritdoc
      */
@@ -50,16 +50,16 @@ class ProductController extends Controller
             $newRecord = (empty($post[$productModel]['id'])) ? true : false;
 
             // processing of the list of products
-            if ($newRecord && isset($post['ProductsTmp']['count-prod']) && (int)$post['ProductsTmp']['count-prod'] > 1 ) {
+            if ($newRecord && isset($post['ProductsTmp']['count_prod']) && (int)$post['ProductsTmp']['count_prod'] > 1 ) {
 
-                $count = (int)$post['ProductsTmp']['count-prod'];
+                $count = (int)$post['ProductsTmp']['count_prod'];
 
                 /**@todo доработать */
                 if ($count >= 300) {
                     return json_encode(['error' => true, 'data' => null]);
                 }
 
-                unset($post['ProductsTmp']['count-prod']);
+                //unset($post['ProductsTmp']['count_prod']);
                 for($i = 1; $i <= $count; $i++) {
                     $product = new ProductsTmp();
                     $product->load($post);
@@ -217,8 +217,13 @@ class ProductController extends Controller
         $get = Yii::$app->request->get();
         $searchForm->load($get);
             if ($searchForm->validate()) {
-                $productsFound = $productsList->searchProductsForTransfer($searchForm->getAttributes(), $invoiceTransfer->store_id);
-                $products = $productsList->mergeWithProductsFound($productsFound);
+                if ($searchForm->auto_check == 1 && $searchForm->id) {
+                    $productsList->addProduct($searchForm->id, $searchForm->getAttributes());
+                    $products = $productsList->get();
+                } else {
+                    $productsFound = $productsList->searchProductsForTransfer($searchForm->getAttributes(), $invoiceTransfer->store_id);
+                    $products = $productsList->mergeWithProductsFound($productsFound);
+                }
             } else {
                 $products = $productsList->get();
             }

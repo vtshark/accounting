@@ -65,6 +65,9 @@ $(document).ready(function () {
             return false;
         })
         .on('afterValidate', '#create-product-form', function (event, messages, errorAttributes) {
+            if (errorAttributes.length > 0) {
+                return false;
+            }
             var data = $(this).serialize();
             $.ajax({
                 url: "/product/create",

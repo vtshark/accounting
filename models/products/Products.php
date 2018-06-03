@@ -32,6 +32,7 @@ use Yii;
  * @property integer invoice_transfer_id
  * @property integer invoice_sales_id
  * @property double prime_cost
+ * @property integer count_prod
  *
  * @property ProdNames $prodName
  * @property Suppliers $supplier
@@ -43,6 +44,7 @@ class Products extends \yii\db\ActiveRecord
 {
     const SCENARIO_ADD_PRODUCT = 'add_product';
     const SCENARIO_APPROVE_INVOICE = 'approve_invoice';
+    public $count_prod;
 
     public static function tableName()
     {
@@ -56,11 +58,16 @@ class Products extends \yii\db\ActiveRecord
     {
         return [
             [['name_id', 'supplier_id', 'manufacturer_id', 'store_id', 'category_id', 'price_sell',
-                'invoice_procur_id', 'invoice_transfer_id', 'invoice_sales_id','probe'],
+                'invoice_procur_id', 'invoice_transfer_id', 'invoice_sales_id', 'probe', 'count_prod'],
                 'integer'],
             [['weight', 'price_procur', 'size'], 'double'],
             [['prime_cost'], 'double', 'on' => self::SCENARIO_APPROVE_INVOICE],
             [['art'], 'string', 'max' => 255],
+            [
+                ['name_id', 'supplier_id', 'manufacturer_id', 'store_id', 'category_id',
+                'invoice_procur_id', 'probe', 'weight', 'size', 'art', 'price_procur', 'price_sell'
+                ], 'required'
+            ],
             [['name_id'], 'exist', 'skipOnError' => true, 'targetClass' => ProdNames::className(), 'targetAttribute' => ['name_id' => 'id']],
             [['supplier_id'], 'exist', 'skipOnError' => true, 'targetClass' => Suppliers::className(), 'targetAttribute' => ['supplier_id' => 'id']],
             [['manufacturer_id'], 'exist', 'skipOnError' => true, 'targetClass' => Manufacturers::className(), 'targetAttribute' => ['manufacturer_id' => 'id']],
@@ -86,13 +93,16 @@ class Products extends \yii\db\ActiveRecord
             'weight' => 'Вес',
             'price_sell' => 'Цена продажи',
             'price_procur' => 'Цена закупки',
-            'invoice_procur_id' => 'Накладная закупки',
+            'invoice_procur_id' => '№ закупки',
+            'invoice_transfer_id' => '№ выдачи',
+            'invoice_sales_id' => '№ продажи',
             'probe' => 'Проба',
             'size' => 'Размер',
             'prime_cost' => 'Себестоимость',
             'date_transfer_invoice' => 'Дата выдачи',
             'date_procur_invoice' => 'Дата закупки',
-            'date_sales_invoice' => 'Дата продажи'
+            'date_sales_invoice' => 'Дата продажи',
+            'count_prod' => 'Количество'
         ];
     }
 

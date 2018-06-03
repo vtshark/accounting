@@ -7,7 +7,7 @@ $invoice_id = Yii::$app->request->getQueryParam('invoice_id');
     <input id="selection-mode" type="hidden" value="<?= $selection_mode ?>">
     <input id="invoice-id" type="hidden" hidden value="<?= $invoice_id ?>">
 
-<table id="table-products-selection" class="cell-border table-hover" style="width:100%">
+<table id="table-products-selection" class="cell-border table-hover" style="width:100%;">
     <thead>
     <tr>
         <? if (isset($attributeLabels['info']['#'])) { ?>
@@ -25,20 +25,21 @@ $invoice_id = Yii::$app->request->getQueryParam('invoice_id');
     <tbody>
     <?
     if (!empty($products)) {
-        foreach ($products as $product) { ?>
+        $i = count($products) - 1;
+        while ($i >= 0) { ?>
             <tr>
                 <? if (isset($attributeLabels['info']['#'])) { ?>
                     <th></th>
                 <? } ?>
 
                 <? if (isset($attributeLabels['info']['check'])) {
-                    $check = isset($product['check']) ? 1 : 0;
+                    $check = isset($products[$i]['check']) ? 1 : 0;
                     ?>
                     <th>
                         <div class="btn-checkbox">
                         <?= CheckboxX::widget([
-                            'name' => 'ch_' . $product['id'],
-                            'options' => [ 'id' => $product['id'] ],
+                            'name' => 'ch_' . $products[$i]['id'],
+                            'options' => [ 'id' => $products[$i]['id'] ],
                             'pluginOptions' => ['threeState' => false],
                             'value' => $check
                         ]); ?>
@@ -47,11 +48,13 @@ $invoice_id = Yii::$app->request->getQueryParam('invoice_id');
                 <? } ?>
 
                 <? foreach ($attributeLabels['data'] as $attribute => $label) { ?>
-                    <td><?= $product[$attribute] ?? '' ?></td>
+                    <td><?= $products[$i][$attribute] ?? '' ?></td>
                 <? } ?>
 
             </tr>
-        <? }
+        <?
+        $i--;
+        }
     }
     ?>
     </tbody>

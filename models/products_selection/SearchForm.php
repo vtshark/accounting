@@ -12,6 +12,7 @@ class SearchForm extends \yii\base\Model
     public $weight;
     public $price_sell;
     public $size;
+    public $auto_check = false;
 
     public function rules()
     {
@@ -19,6 +20,7 @@ class SearchForm extends \yii\base\Model
             [['store_id'], 'required'],
             [['store_id'], 'validateCountAttr'],
             [['id', 'store_id', 'name_id', 'category_id', 'supplier_id'], 'integer'],
+            [['auto_check'], 'boolean'],
             [['art'], 'string', 'max' => 255],
             [['weight', 'price_sell', 'size'], 'double'],
         ];
@@ -44,7 +46,7 @@ class SearchForm extends \yii\base\Model
     public function validateCountAttr($attribute)
     {
         $attributes = $this->getAttributes();
-        unset($attributes['store_id']);
+        unset($attributes['store_id'], $attributes['auto_check']);
         $attributes = array_filter($attributes);
         if (!count($attributes)) {
             $this->addError($attribute, 'Не достаточно параметров для поиска!');

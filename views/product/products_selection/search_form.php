@@ -7,30 +7,36 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 use yii\helpers\ArrayHelper;
+use yii\helpers\Url;
 
-//$this->title = 'Отбор изделий';
-//$this->params['breadcrumbs'][] = $this->title;
 $stores_arr = ArrayHelper::map(\app\models\Stores::getAll(), 'id', 'name');
 unset($stores_arr[$invoiceTransfer->store_id]);
+$selection_mode = Yii::$app->request->getQueryParam('selection_mode');
+$invoice_id = Yii::$app->request->getQueryParam('invoice_id');
 ?>
 
     <?php $form = ActiveForm::begin([
         'id' => 'select-products-form',
         'options' => ['class' => 'panel1'],
-    'method' => 'get'
+        'method' => 'get',
+        'action' => Url::to(['product/selection/' . $selection_mode . '-' . $invoice_id])
     ]); ?>
 
     <?= $form->field($searchForm, 'store_id')->dropDownList($stores_arr, ['prompt' => '']);?>
 
-    <?= $form->field($searchForm, 'id')->textInput() ?>
+    <?= $form->field($searchForm, 'id') ?>
 
-    <?= $form->field($searchForm, 'art')->textInput() ?>
+    <?= $form->field($searchForm, 'auto_check')->checkbox() ?>
 
-    <?= $form->field($searchForm, 'weight')->textInput() ?>
+    <hr>
 
-    <?= $form->field($searchForm, 'size')->textInput() ?>
+    <?= $form->field($searchForm, 'art') ?>
 
-    <?= $form->field($searchForm, 'price_sell')->textInput() ?>
+    <?= $form->field($searchForm, 'weight') ?>
+
+    <?= $form->field($searchForm, 'size') ?>
+
+    <?= $form->field($searchForm, 'price_sell') ?>
 
     <?= $form->field($searchForm, 'name_id')->dropDownList(
         ArrayHelper::map(\app\models\ProdNames::getAll(), 'id', 'name'),
@@ -44,7 +50,7 @@ unset($stores_arr[$invoiceTransfer->store_id]);
         ArrayHelper::map(\app\models\Suppliers::getAll(), 'id', 'name_short'),
         ['prompt' => '']);?>
 
-    <?= Html::submitButton('Поиск', ['class' => 'btn btn-primary', 'name' => 'login-button']) ?>
+    <?= Html::submitButton('Поиск', ['class' => 'btn btn-primary']) ?>
     <?php ActiveForm::end(); ?>
 
 

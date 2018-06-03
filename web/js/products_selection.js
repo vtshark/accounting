@@ -118,4 +118,9 @@ $(document).ready(function () {
         });
     });
 
+
+    if ($("#searchform-auto_check").attr('checked')) {
+        $( "#searchform-id" ).select().focus();
+    }
+
 });

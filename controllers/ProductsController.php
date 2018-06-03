@@ -2,7 +2,6 @@
 
 namespace app\controllers;
 use app\models\products\ProductsSearch;
-use app\models\products\SearchForm;
 use yii\filters\AccessControl;
 use yii\web\Controller;
 use Yii;
@@ -25,15 +24,14 @@ class ProductsController extends Controller
     }
 
     public function actionIndex() {
-        $searchForm = new SearchForm();
-
         $searchModel = new ProductsSearch();
+        $searchModel->load(Yii::$app->request->queryParams);
+        //echo "<pre>" . print_r($searchModel ,1) . "</pre>"; die;
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
 
         return $this->render('index',
             [
-                'searchForm' => $searchForm,
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider
             ]

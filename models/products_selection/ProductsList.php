@@ -61,8 +61,9 @@ class ProductsList
         $this->session->set($this->session_key, $productsSelection);
     }
 
-    public function searchProductsForTransfer(array $searchParams, $store_id)
+    public function searchProductsForTransfer(array $searchParams, int $store_id):array
     {
+        unset($searchParams['auto_check']);
         $skipIds = $this->getSelectedIds();
         $searchParams = array_diff($searchParams, array(''));
         $productsArr = Products::find()->where($searchParams)
@@ -111,9 +112,16 @@ class ProductsList
         return $out;
     }
 
-    public function addProduct($id)
+    public function addProduct(int $id, array $searchParams = [])
     {
-        $product = Products::findOne($id);
+        unset($searchParams['auto_check']);
+        $skipIds = $this->getSelectedIds();
+        $product = Products::find()->where(['id' => $id])
+            ->andFilterWhere($searchParams)
+            ->andFilterWhere(['not in', 'id', $skipIds])
+            ->with(['prodName', 'store', 'manufacturer', 'supplier'])
+            ->limit(1)->one();
+        //$product = Products::findOne($id);
         if ($product) {
             $productArr = $this->productDataToArr($product);
             $productArr['check'] = true;
