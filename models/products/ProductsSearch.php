@@ -155,9 +155,11 @@ class ProductsSearch extends Products
         }
 
         // grid filtering conditions
-        $query->andWhere([
-            'invoice_procur_id' => $params['procurement_invoice_id'],
-        ]);
+        if (isset($params['procurement_invoice_id'])) {
+            $query->andWhere([
+                'invoice_procur_id' => $params['procurement_invoice_id'],
+            ]);
+        }
         $query->andFilterWhere([
             'id' => $this->id,
             'name_id' => $this->name_id,
@@ -195,16 +197,18 @@ class ProductsSearch extends Products
 
         $this->load($params);
 
-        if (!$this->validate() || !$params['transfer_invoice_id']) {
+        if (!$this->validate() || empty($params['transfer_invoice_id'])) {
             // uncomment the following line if you do not want to return any records when validation fails
             $query->where('0=1');
             return $dataProvider;
         }
 
         // grid filtering conditions
-        $query->andWhere([
-            'invoice_transfer_id' => $params['transfer_invoice_id'],
-        ]);
+        if (isset($params['transfer_invoice_id'])) {
+            $query->andWhere([
+                'invoice_transfer_id' => $params['transfer_invoice_id'],
+            ]);
+        }
         $query->andFilterWhere([
             'id' => $this->id,
             'name_id' => $this->name_id,

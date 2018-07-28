@@ -73,9 +73,11 @@ if ($store_type_id <> StoreTypes::TMP_TYPE_ID) {
 }
 $stores = \app\models\Stores::getStores(['store_type_id' => [StoreTypes::TMP_TYPE_ID, StoreTypes::DEFAULT_TYPE_ID]]);
 $storeTypes = StoreTypes::getTypes(['id' => [StoreTypes::TMP_TYPE_ID, StoreTypes::DEFAULT_TYPE_ID]]);
+
+$invoiceProcurement_id = $invoiceProcurement->id ?? '';
 ?>
 
-<input id="invoice-id" type="hidden" value="<?= $invoiceProcurement->id ?>">
+<input id="invoice-id" type="hidden" value="<?= $invoiceProcurement_id ?>">
 <ul class="nav nav-tabs">
     <li role="presentation" class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -150,14 +152,14 @@ $storeTypes = StoreTypes::getTypes(['id' => [StoreTypes::TMP_TYPE_ID, StoreTypes
 
     <div role="tabpanel" class="tab-pane" id="margin">
         <?= $this->render('/invoice-procurement/products_pricing_form', [
-            'procurement_id' => $invoiceProcurement->id
+            'procurement_id' =>$invoiceProcurement_id
         ]); ?>
     </div>
 
     <div role="tabpanel" class="tab-pane" id="approve-invoice">
         <div class='edit-product-wrapper'>
             <?= $this->render('/invoice-procurement/approve_invoice_form', [
-                'procurement_id' => $invoiceProcurement->id
+                'procurement_id' =>  $invoiceProcurement_id
             ]); ?>
         </div>
     </div>

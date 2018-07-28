@@ -71,7 +71,7 @@ use kartik\daterange\DateRangePicker;
                 'attribute' => 'date_transfer_invoice',
                 'headerOptions' => ['style' => 'width:60px;'],
                 'value' => function($data) {
-                    $date = $data->transferInvoice->created_at;
+                    $date = $data->transferInvoice->created_at ?? null;
                     $date = $date ? date("d.m.Y", $date) : "";
                     return $date;
                 },
@@ -81,7 +81,7 @@ use kartik\daterange\DateRangePicker;
                 'attribute' => 'date_sales_invoice',
                 'headerOptions' => ['style' => 'width:60px;'],
                 'value' => function($data) {
-                    $date = $data->salesInvoice->created_at;
+                    $date = $data->salesInvoice->created_at ?? null;
                     $date = $date ? date("d.m.Y", $date) : "";
                     return $date;
                 },

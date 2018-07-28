@@ -51,9 +51,10 @@ if ($invoiceTransfer) {
     $disabledAddProd = 'disabled';
 }
 
+$invoiceTransfer_id = $invoiceTransfer->id ?? '';
 ?>
 
-<input id="invoice-id" type="hidden" value="<?= $invoiceTransfer->id ?>">
+<input id="invoice-id" type="hidden" value="<?= $invoiceTransfer_id ?>">
 <ul class="nav nav-tabs">
     <li role="presentation" class="dropdown">
         <a class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -68,7 +69,7 @@ if ($invoiceTransfer) {
     </li>
 
     <li role="presentation" class="<?=$disabledClass?>">
-        <a href="<?= Url::toRoute(['product/selection/transfer_products-' . $invoiceTransfer->id]) ?>">
+        <a href="<?= Url::toRoute(['product/selection/transfer_products-' . $invoiceTransfer_id]) ?>">
             <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
             Поиск изделий
         </a>

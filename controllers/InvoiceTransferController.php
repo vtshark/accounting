@@ -44,6 +44,7 @@ class InvoiceTransferController extends Controller
             [
                 'invoiceTransfer' => $invoiceTransfer,
                 'dataProvider' => $dataProvider,
+                'searchModel' => $products
             ]
         );
     }
